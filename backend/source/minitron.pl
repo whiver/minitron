@@ -2,11 +2,13 @@
 
 :- dynamic board/3. % permet l'assertion et le retrait de faits board/3 (Board + les 2 têtes)
 
+%On ne prendra que des matrice carrees
+dim(10). 
+
+
 %Pour recuperer un element d une liste vue comme une matrice
-
-dim(10). %On ne prendra que des matrice carrees
-
 operation(X,Y,R) :- dim(D), R is ((X*D)+Y).
+% TODO : ATTENTION : ici X est associe à "X-1", et Y à "Y-1" pour des appels plus "naturels", à discuter
 matrice(X,Y,List, Element) :- operation((X-1),(Y-1),R), nth0( R, List, Element, _).
 
 %Initialise une liste avec N valeurs V (Besoin de refactor ?)
@@ -26,9 +28,9 @@ displayElem([H|T], I) :- write(H), succ(I, Next), displayElem(T, Next).
 
 %Init pourrav pour tester
 init :- dim(D), N is D*D, %Calcul des dimensions
-X1 is 1, Y1 is 1, X2 is 10, Y2 is 10, %définition des points des 2 têtes
-matrice(X1, Y1, Board, 1), matrice(X2, Y2, Board, 2), %Placement des têtes dans la matrice
-initList(0, Board, N), %initialisation du reste de la matrice avec des 0
-assert(board(Board, [X1, Y1], [X2, Y2])), %assertion du fait board
-displayBoard. %Affichage (Remplacer plus tard par le lancement du jeu)
+	X1 is 1, Y1 is 1, X2 is 10, Y2 is 10, %définition des points des 2 têtes
+	matrice(X1, Y1, Board, 1), matrice(X2, Y2, Board, 2), %Placement des têtes dans la matrice
+	initList(0, Board, N), %initialisation du reste de la matrice avec des 0
+	assert(board(Board, [X1, Y1], [X2, Y2])), %assertion du fait board
+	displayBoard. %Affichage (Remplacer plus tard par le lancement du jeu)
 
