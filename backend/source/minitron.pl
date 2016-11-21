@@ -3,7 +3,7 @@
 :- dynamic board/3. % permet l'assertion et le retrait de faits board/3 (Board + les 2 têtes)
 
 %On ne prendra que des matrice carrees
-dim(10). 
+dim(2). 
 
 
 %Pour recuperer un element d une liste vue comme une matrice
@@ -15,6 +15,8 @@ matrice(X,Y,List, Element) :- extraire((X-1),(Y-1),R), nth0( R, List, Element, _
 initList(_, [], 0).
 initList(V, [H | Tail], N) :- (H is V; H is 1; H is 2), Prec is N-1, initList(V, Tail, Prec).
 
+% Supprime l'ancienne board et les anciennes têtes, instancie la nouvelle board
+applyIt(Board, Head1, Head2, NewBoard, NewHead1, NewHead2) :- retract(board(Board, Head1, Head2)), assert(board(NewBoard, NewHead1, NewHead2)).
 
 %Affiche toute la board
 displayBoard :- board(Board, _, _), displayElem(Board, 0).
@@ -45,18 +47,18 @@ checkBas(X, Y, Xsol, Ysol) :- Xsol is (X+1), Ysol is (Y), positionValide(Xsol, Y
 
 
 %play :- write('New turn'),
-%    		board(Board), % instanciate the board from the knowledge base 
-%       	    displayBoard, % print it
-%            ia(Board, Move1,Player1), % ask the AI for a move, that is, an index for the Player 
+%    		board(Board, Head1, Head2), % instanciate the board from the knowledge base 
+%       	displayBoard, % print it
+%           ia(Board, Move1,Player1), % ask the AI for a move, that is, an index for the Player 
 %    	    ia(Board, Move2,Player2),
-%    		playMoves(Board,Move1,Move2,NewBoard), % Play the move and get the result in a new Board
-%    		applyIt(Board, NewBoard), % Remove the old board from the KB and store the new one
+%    		playMoves(Board, Head1, Head2, Move1, Move2, NewBoard, NewHead1, NewHead2), % Play the move and get the result in a new Board
+%    		applyIt(Board, Head1, Head2, NewBoard, NewHead1, NewHead2), % Remove the old board from the KB and store the new one
 %			play.
 
 %Init pourrav pour tester
 init :- dim(D), N is D*D, %Calcul des dimensions
-	X1 is 1, Y1 is 1, X2 is 10, Y2 is 10, %définition des points des 2 têtes
-	matrice(X1, Y1, Board, 1), matrice(X2, Y2, Board, 2), %Placement des têtes dans la matrice
+	%X1 is 1, Y1 is 1, X2 is 10, Y2 is 10, %définition des points des 2 têtes
+	%matrice(X1, Y1, Board, 1), matrice(X2, Y2, Board, 2), %Placement des têtes dans la matrice
 	initList(0, Board, N), %initialisation du reste de la matrice avec des 0
 	assert(board(Board, [X1, Y1], [X2, Y2])), %assertion du fait board
 	displayBoard. %Affichage (Remplacer plus tard par le lancement du jeu)
