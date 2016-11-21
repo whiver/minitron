@@ -1,0 +1,32 @@
+{
+  "name": "createjs-boilerplate",
+  "description": "CreateJS boilerplate with ES6 support",
+  "main": "source/app/index.js",
+  "authors": [
+    "eskab"
+  ],
+  "license": "BSD-2-Clause",
+  "keywords": [
+    "createjs",
+    "html5",
+    "game",
+    "application",
+    "canvas",
+    "javascript",
+    "webpack"
+  ],
+  "homepage": "https://github.com/eskab/createjs-boilerplate",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "EaselJS": "^0.8.2",
+    "PreloadJS": "^0.6.2",
+    "SoundJS": "^0.6.2",
+    "TweenJS": "^0.6.2"
+  }
+}
