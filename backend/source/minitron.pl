@@ -7,9 +7,9 @@ dim(10).
 
 
 %Pour recuperer un element d une liste vue comme une matrice
-operation(X,Y,R) :- dim(D), R is ((X*D)+Y).
+extraire(X,Y,R) :- dim(D), R is ((X*D)+Y).
 % TODO : ATTENTION : ici X est associe à "X-1", et Y à "Y-1" pour des appels plus "naturels", à discuter
-matrice(X,Y,List, Element) :- operation((X-1),(Y-1),R), nth0( R, List, Element, _).
+matrice(X,Y,List, Element) :- extraire((X-1),(Y-1),R), nth0( R, List, Element, _).
 
 %Initialise une liste avec N valeurs V (Besoin de refactor ?)
 initList(_, [], 0).
@@ -24,6 +24,27 @@ displayBoard :- board(Board, _, _), displayElem(Board, 0).
 displayElem([], _).
 displayElem([H|T], I) :- dim(D), I is D-1, writeln(H), displayElem(T, 0).
 displayElem([H|T], I) :- write(H), succ(I, Next), displayElem(T, Next).
+
+
+% IA triviale
+% avec par ex. 1 : tourner à gauche
+%			   2 : aller tout droit
+%			   3 : tourner à droite
+iaRandom(Low, High, Resultat) :-  random_between(Low, High, Resultat).
+
+%Echoue ou reussi selon que la position soit occupee ou non.
+positionValide(X, Y) :- board(Board,_,_), matrice(X,Y,Board, Element) , Element == 0.
+
+
+
+
+%Attention, C EST FOIREUX, methode peut etre pas bonne.
+checkHaut(X, Y, Xsol, Ysol) :- Xsol is (X-1), Ysol is (Y), positionValide(Xsol, Ysol).
+checkBas(X, Y, Xsol, Ysol) :- Xsol is (X+1), Ysol is (Y), positionValide(Xsol, Ysol).
+
+
+
+
 
 
 %Init pourrav pour tester
