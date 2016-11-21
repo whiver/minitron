@@ -19,7 +19,6 @@ initList(V, [H | Tail], N) :- (H is V; H is 1; H is 2), Prec is N-1, initList(V,
 %Affiche toute la board
 displayBoard :- board(Board, _, _), displayElem(Board, 0).
 
-
 %Affiche un élément et lance l’affichage de l'élément suivant
 displayElem([], _).
 displayElem([H|T], I) :- dim(D), I is D-1, writeln(H), displayElem(T, 0).
@@ -45,7 +44,14 @@ checkBas(X, Y, Xsol, Ysol) :- Xsol is (X+1), Ysol is (Y), positionValide(Xsol, Y
 
 
 
-
+%play :- write('New turn'),
+%    		board(Board), % instanciate the board from the knowledge base 
+%       	    displayBoard, % print it
+%            ia(Board, Move1,Player1), % ask the AI for a move, that is, an index for the Player 
+%    	    ia(Board, Move2,Player2),
+%    		playMoves(Board,Move1,Move2,NewBoard), % Play the move and get the result in a new Board
+%    		applyIt(Board, NewBoard), % Remove the old board from the KB and store the new one
+%			play.
 
 %Init pourrav pour tester
 init :- dim(D), N is D*D, %Calcul des dimensions
