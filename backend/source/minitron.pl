@@ -44,7 +44,7 @@ displayElem([H|T], I) :- write(H), succ(I, Next), displayElem(T, Next).
 iaRandom(Low, High, Resultat) :-  random_between(Low, High, Resultat).
 
 %Echoue ou reussi selon que la position soit occupee ou non.
-positionValide(X, Y) :- board(Board,_,_), matrice(X,Y,Board, Element) , Element == 0.
+positionValide(X, Y) :- board(Board,_,_), matrice(X,Y,Board, Element) , var(Element).
 
 
 
