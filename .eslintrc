@@ -5,7 +5,8 @@
     "no-underscore-dangle": "off",
     "one-var": "off",
     "func-names": ["error", "never"],
-    "no-console": "off"
+    "no-console": "off",
+    "no-plusplus": "off"
   },
   "globals": {
     "window": true,
