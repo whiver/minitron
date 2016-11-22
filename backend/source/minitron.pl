@@ -33,8 +33,8 @@ displayBoard :- board(Board, _, _), displayElem(Board, 0).
 
 %Affiche un élément et lance l’affichage de l'élément suivant
 displayElem([], _).
-displayElem([H|T], I) :- dim(D), I is D-1, writeln(H), displayElem(T, 0).
-displayElem([H|T], I) :- write(H), succ(I, Next), displayElem(T, Next).
+displayElem([H|T], I) :- dim(D), I is D-1, ((nonvar(H), writeln(H)); writeln(0)), displayElem(T, 0).
+displayElem([H|T], I) :- ((nonvar(H), write(H)); write(0)), succ(I, Next), displayElem(T, Next).
 
 
 % IA triviale
@@ -81,13 +81,14 @@ is1or2([T|Q]) :- nonvar(T),(T=1; T=2), is1or2(Q).
 gameOver :- board(Board,_,_),is1or2(Board).
 
 play :- gameOver.
-play :- write('New turn'),
+play :- write('\33\[2J'),
     		board(Board, Head1, Head2), % instanciate the board from the knowledge base 
        		displayBoard, % print it
            	ia(Board, Move1,Head1), % ask the AI for a move, that is, an index for the Player 
     	    ia(Board, Move2,Head2),
     		playMoves(Board, Move1, Move2, NewBoard), % Play the move and get the result in a new Board
     		applyIt(Board, Head1, Head2, NewBoard, Move1, Move2), % Remove the old board from the KB and store the new one
+			sleep(0.5),
 			play.
 
 %Init pourrav pour tester
