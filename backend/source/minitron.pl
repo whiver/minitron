@@ -1,9 +1,9 @@
 %%% MiniTron %%%
 
-:- dynamic board/3. % permet l'assertion et le retrait de faits board/3 (Board + les 2 têtes)
+:- dynamic board/3, dim/1. % permet l'assertion et le retrait de faits board/3 (Board + les 2 têtes)
 
 %On ne prendra que des matrice carrees
-dim(10). 
+ 
 
 
 %Pour recuperer un element d une liste vue comme une matrice
@@ -43,12 +43,31 @@ checkHaut(X, Y, Xsol, Ysol) :- Xsol is (X-1), Ysol is (Y), positionValide(Xsol, 
 checkBas(X, Y, Xsol, Ysol) :- Xsol is (X+1), Ysol is (Y), positionValide(Xsol, Ysol).
 
 
+% Les deplacement possibles à l'intérieur
+move(0,X,Y,NewX,NewY) :- NewX is X-1, NewY is Y.
+move(1,X,Y,NewX,NewY) :- NewX is X, NewY is Y+1.
+move(2,X,Y,NewX,NewY) :- NewX is X+1, NewY is Y.
+move(3,X,Y,NewX,NewY) :- NewX is X, NewY is Y-1.
 
+% se placer sur la board 
+whereInBoard(X,Y,N,[0,1,2,3]) :-  X \== N, Y \== N, X \== 1, Y \== 1 .
+whereInBoard(1,1,_,[1,2]).
+whereInBoard(1,Y,N,[1,2,3]) :- Y \== 1, Y \== N.
+whereInBoard(1,N,N,[2,3]).
+whereInBoard(X,N,N,[0,2,3]) :- X \== 1, X \== N.
+whereInBoard(N,N,N,[0,3]).
+whereInBoard(N,Y,N,[0,1,3]) :-  Y \== 1, Y \== N.
+whereInBoard(N,1,N,[0,1]) .
+whereInBoard(X,1,N,[0,1,2]) :- X \== 1, X \== N.
+
+% IA calculant le prochain déplacement 
+nextMove(X,Y,NewX,NewY,Size) :-  whereInBoard(X,Y,Size,Possibilities),random_member(N,Possibilities), move(N,X,Y,NewX,NewY).
 
 
 
 %Init pourrav pour tester
-init :- dim(D), N is D*D, %Calcul des dimensions
+init :- assert(dim(10)),
+	dim(D), N is D*D, %Calcul des dimensions
 	X1 is 1, Y1 is 1, X2 is 10, Y2 is 10, %définition des points des 2 têtes
 	matrice(X1, Y1, Board, 1), matrice(X2, Y2, Board, 2), %Placement des têtes dans la matrice
 	initList(0, Board, N), %initialisation du reste de la matrice avec des 0
