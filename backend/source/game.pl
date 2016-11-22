@@ -1,11 +1,17 @@
-
 % Applique les 2 coups sur une nouvelle board (NewBoard)
-% Move1 -> Nouvelles coordonnées de la tête du joueur 1
-% Move2 -> Nouvelles coordonnées de la tête di joueur 2
-% Completement daubée ! TODO : Trouver un moyen de copier Board dans NewBoard, sauf pour les 2 nouveaux points.
+% arg1 -> Ancienne board
+% arg2 -> Nouvelles coordonnées de la tête du joueur 1
+% arg3 -> Nouvelles coordonnées de la tête du joueur 2
+% arg4 -> Nouvelle board
 playMoves(Board, [X1,Y1], [X2,Y2], NewBoard) :- Board = NewBoard, matrice(X1, Y1, NewBoard, 1), matrice(X2, Y2, NewBoard, 2).
 
 % Supprime l'ancienne board et les anciennes têtes, instancie la nouvelle board
+% arg1 -> Ancienne board
+% arg2 -> Ancienne tete joueur 1
+% arg3 -> Ancienne tete joueur 2
+% arg1 -> Nouvelle board
+% arg2 -> Nouvelle tete joueur 1
+% arg3 -> Nouvelle tete joueur 2
 applyIt(Board, Head1, Head2, NewBoard, NewHead1, NewHead2) :- retract(board(Board, Head1, Head2)), assert(board(NewBoard, NewHead1, NewHead2)).
 
 
