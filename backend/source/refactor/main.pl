@@ -1,1 +1,1 @@
-[utils_init, affichage, game, http, iaRandom].
+:- [utils_init, affichage, game, http, iaRandom].
