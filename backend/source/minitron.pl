@@ -81,7 +81,7 @@ is1or2([T|Q]) :- nonvar(T),(T=1; T=2), is1or2(Q).
 gameOver :- board(Board,_,_),is1or2(Board).
 
 play :- gameOver.
-play :- writeln('New turn'),
+play :- write('\33\[2J'),
     		board(Board, Head1, Head2), % instanciate the board from the knowledge base 
        		displayBoard, % print it
            	ia(Board, Move1,Head1), % ask the AI for a move, that is, an index for the Player 
