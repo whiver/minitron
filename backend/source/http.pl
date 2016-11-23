@@ -23,6 +23,7 @@ httpInitialBoardState(_) :-
 % Joue une itération et retourne la nouvelle position des têtes
 :- http_handler(root(nextBoardState), httpNextBoardState, []).
 httpNextBoardState(_) :-
+	cors_enable,
 	format('Content-type: application/json~n~n', []),
 	format('{', []),
 	nextBoardToJSON,
