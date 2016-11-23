@@ -9,19 +9,28 @@ server(Port) :-
 
 :- http_handler(root(initialBoardState), httpInitialBoardState, []).
 
-% Formatte le board en JSON
+% Formate le board en JSON
 % Ne retourne que la taille d'un côté et les têtes des joueurs
 initialBoardToJSON :-
+	sizeToJSON,
+	format(',', []),
+	headsToJSON.
+
+% Formate la taille d'un côté du board en JSON
+sizeToJSON :-
 	dim(Size),
-	format('"size":~w', [Size]),
-	format(',"heads":[', []),
+	format('"size":~w', [Size]).
+
+% Formate les têtes des joueurs en JSON
+headsToJSON :-
+	format('"heads":[', []),
 	board(_, H1, H2),
 	headToJSON(H1),
 	format(',', []),
 	headToJSON(H2),
 	format(']', []).
 
-% Formatte une tête d'un joueur en JSON
+% Formate une tête d'un joueur en JSON
 headToJSON([H|[T|_]]) :- format('{"x":~w,"y":~w}', [H, T]).
 
 % Méthode appelée sur l'URL '/initialBoardState'
