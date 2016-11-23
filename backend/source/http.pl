@@ -39,6 +39,8 @@ initialBoardToJSON :-
 % WARNING: Erreur si GameOver
 nextBoardToJSON :-
 	playStep,
+	statusToJSON,
+	format(',', []),
 	headsToJSON.
 
 % Formate la taille d'un côté du board en JSON
@@ -57,3 +59,11 @@ headsToJSON :-
 
 % Formate une tête d'un joueur en JSON
 headToJSON([H|[T|_]]) :- format('{"x":~w,"y":~w}', [H, T]).
+
+% Formate le statut de la partie (match nul, victoire J2, etc.) en JSON
+% 0  : match en cours
+% -1 : match nul
+% 1  : victoire joueur 1
+% 2  : victoire joueur 2
+statusToJSON :-
+	format('"status":0').
