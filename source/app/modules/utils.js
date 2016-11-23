@@ -13,6 +13,11 @@ import { Container, Shape, Graphics, Text } from 'EaselJS';
 const utils = module.exports = {};
 
 /**
+ * Ajax
+ */
+utils.request = require('request');
+
+/**
  * Bluebird promise
  */
 utils._Promise = require('babel-runtime/core-js/promise').default;

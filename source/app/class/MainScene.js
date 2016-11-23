@@ -8,6 +8,12 @@ import Player from './Player';
 /* Game constants */
 const GRID_MARGIN = 50;
 const GRID_STROKE_WIDTH = 5;
+const PLAYER_NAMES = [
+  'Jarvis',
+  'xXx Raptor xXx',
+  'BigBlue',
+  'Unicoooorn',
+];
 
 /** MainMenu showing game menu */
 export default class MainScene {
@@ -31,10 +37,35 @@ export default class MainScene {
     this.bg.scaleX = this.bg.scaleY = scale;
     this.ctr.addChild(this.bg);
 
-    this.setupBoard(20, 20);
-    this.board.addChild(new Player('Jarvis', this.cellSize, 5, 5));
+    // Init the server connection
+    utils.request({
+      url: 'http://localhost:8000/initialBoardState',
+      method: 'GET',
+      json: true,
+      responseType: 'json',
+    }, (err, res, response) => {
+      if (response == null) window.console.error('Can\'t reach the Prolog server :(');
+      /*
+        Should contain:
+        size: int
+        heads: array, contains each player object
+          x: int -> starting at 1
+          y: int -> starting at 1
+       */
+      this.setupBoard(response.size, response.size);
 
-    Game.STAGE.addChild(this.ctr);
+      for (let i = 0; i < response.heads.length; ++i) {
+        console.log(`Player added: ${PLAYER_NAMES[i]}.`);
+        this.board.addChild(
+          new Player(PLAYER_NAMES[i],
+            this.cellSize,
+            response.heads[i].x - 1,
+            response.heads[i].y - 1,
+          ));
+      }
+
+      Game.STAGE.addChild(this.ctr);
+    });
   }
 
   /**
