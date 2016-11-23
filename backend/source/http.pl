@@ -32,6 +32,7 @@ initialBoardToJSON :-
 	headsToJSON.
 
 % Joue une itération et retourne la nouvelle position des têtes en JSON
+% WARNING: Erreur si GameOver
 nextBoardToJSON :-
 	playStep,
 	headsToJSON.
