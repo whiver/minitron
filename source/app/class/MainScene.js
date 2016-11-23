@@ -59,8 +59,8 @@ export default class MainScene {
         this.board.addChild(
           new Player(PLAYER_NAMES[i],
             this.cellSize,
-            response.heads[i].x - 1,
-            response.heads[i].y - 1,
+            response.heads[i].x,
+            response.heads[i].y,
           ));
       }
 
