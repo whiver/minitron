@@ -31,4 +31,13 @@ play :- write('\33\[2J'),
 			sleep(0.5),
 			play.
 
-
+% Joue une itération du jeu => n'est pas récursive
+playStep :- gameOver.
+playStep :- 
+	%write('\33\[2J'),
+	board(Board, Head1, Head2), % instanciate the board from the knowledge base 
+   	ia(Board, Move1,Head1), % ask the AI for a move, that is, an index for the Player 
+    ia(Board, Move2,Head2),
+	playMoves(Board, Move1, Move2, NewBoard), % Play the move and get the result in a new Board
+	applyIt(Board, Head1, Head2, NewBoard, Move1, Move2). % Remove the old board from the KB and store the new one
+	%displayBoard. % print it
