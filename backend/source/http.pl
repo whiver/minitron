@@ -1,16 +1,19 @@
 % Serveur HTTP capable de traiter les requêtes de l'IHM %
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_cors)).
 
 server(Port) :-
         http_server(http_dispatch,
-                    [port(Port)]).
+                    [port(Port)]),
+        set_setting(http:cors, ['*']).
 
 
 % Méthode appelée sur l'URL '/initialBoardState'
 % Retourne l'état initial du plateau (taille et position des têtes)
 :- http_handler(root(initialBoardState), httpInitialBoardState, []).
 httpInitialBoardState(_) :-
+	cors_enable,
 	format('Content-type: application/json~n~n', []),
 	format('{', []),
 	initialBoardToJSON,
