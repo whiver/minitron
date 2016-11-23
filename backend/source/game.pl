@@ -43,21 +43,19 @@ winner(Board,[X1,Y1], [X2,Y2],'2') :- matrice(X1,Y1,Board,N1), nonvar(N1), matri
 is1or2([]).
 is1or2([T|Q]) :- nonvar(T),(T=1; T=2), is1or2(Q).
 
-gameOver(Move1,Move2) :- board(Board,_,_),winner(Board,Move1,Move2,W).
-% gameOver(_,_) :- board(Board,_,_),is1or2(Board),writeln('\33\[2J'), writeln('GAME OVER'), write('Le Gagnant est : '), write(W).
-
-% play :- gameOver(), writeln('\33\[2J'), writeln('GAME OVER'), write('Le Gagnant est : '), write(W).
+gameOver(Board) :- is1or2(Board), writeln('Match nul').
+gameOver(Move1,Move2) :- board(Board,_,_),winner(Board,Move1,Move2,W),writeln('GAME OVER\nLe Gagnant est : '+W).
 
 play :- writeln('\33\[2J'),
     		board(Board, Head1, Head2), % instanciate the board from the knowledge base 
-       		displayBoard, % print it
+       		not(gameOver(Board)), % Teste si le plateau n'est pas rempli
+       		displayBoard,!, % print it
            	ia(Board, Move1,Head1), % ask the AI for a move, that is, an index for the Player 
     	    ia(Board, Move2,Head2),
-    	    not(gameOver(Move1,Move2)), 
+    	    not(gameOver(Move1,Move2)), % Teste si le prochain mouvement ne provoque pas la fin du jeu
     		playMoves(Board, Move1, Move2, NewBoard), % Play the move and get the result in a new Board
     		applyIt(Board, Head1, Head2, NewBoard, Move1, Move2), % Remove the old board from the KB and store the new one
-			sleep(0.5),%writeln('\n\n'), %displayBoard.
-			play, !.
-play.
-% writeln('\33\[2J')
+			sleep(0.5),
+			play.
+
 
