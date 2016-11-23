@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions, import/no-unresolved */
 import { Bitmap, Shape } from 'EaselJS';
-
 import config from '../config';
 import utils from '../modules/utils';
 import Game from './Game';
+import Player from './Player';
 
 /* Game constants */
 const GRID_MARGIN = 50;
@@ -11,7 +11,6 @@ const GRID_STROKE_WIDTH = 5;
 
 /** MainMenu showing game menu */
 export default class MainScene {
-
   /**
    * Calling init function
    */
@@ -33,6 +32,8 @@ export default class MainScene {
     this.ctr.addChild(this.bg);
 
     this.setupBoard(20, 20);
+    this.board.addChild(new Player('Jarvis', this.cellSize, 5, 5));
+
     Game.STAGE.addChild(this.ctr);
   }
 
