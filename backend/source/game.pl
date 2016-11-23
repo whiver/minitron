@@ -15,20 +15,49 @@ playMoves(Board, [X1,Y1], [X2,Y2], NewBoard) :- Board = NewBoard, matrice(X1, Y1
 applyIt(Board, Head1, Head2, NewBoard, NewHead1, NewHead2) :- retract(board(Board, Head1, Head2)), assert(board(NewBoard, NewHead1, NewHead2)).
 
 
+% On arrive à la fin du jeu dès que l'un des joueurs essaye de sortir du plateau, ou dès qu'il marche sur ça trainé ou celle de
+% l'autre joueur
+
+out(X,Y,N) :- X>N, !.
+out(X,Y,N) :- Y>N, !.
+out(X,Y,N) :- X<1, !. 
+out(X,Y,N) :- Y<1, !.
+
+% Les deux mouvements sont Out
+winner(Board,[X1,Y1], [X2,Y2],'Match nul') :-  dim(N), out(X1,Y1,N), out(X2,Y2,N). 
+% Le 1 est Out, le 2 est à bon.
+winner(Board,[X1,Y1], [X2,Y2],'2') :-  dim(N), out(X1,Y1,N), not(out(X2,Y2,N)), matrice(X2,Y2,Board,N2), var(N2).
+% Le 2 est Out, le 1 n'est bon.
+winner(Board,[X1,Y1], [X2,Y2],'1') :-  dim(N), out(X2,Y2,N), not(out(X1,Y1,N)), matrice(X1,Y1,Board,N1), var(N1).
+% Le 2 est Out, le 1 est dedans mais a percuté 1 ou 2
+winner(Board,[X1,Y1], [X2,Y2],'Match nul') :-  dim(N), out(X2,Y2,N), not(out(X1,Y1,N)), matrice(X1,Y1,Board,N1), nonvar(N1).
+% Le 1 est Out, le 2 est dedans mais a percuté 1 ou 2
+winner(Board,[X1,Y1], [X2,Y2],'Match nul') :-  dim(N), out(X1,Y1,N), not(out(X2,Y2,N)), matrice(X2,Y2,Board,N2), nonvar(N2).
+% Les deux sont dedans, les deux ont percuté 1 ou 2 
+winner(Board,[X1,Y1], [X2,Y2],'Match nul') :- matrice(X1,Y1,Board,N1), nonvar(N1),matrice(X2,Y2,Board,N2), nonvar(N2).
+% 2 a percuté, et pas 1
+winner(Board,[X1,Y1], [X2,Y2],'1') :- matrice(X2,Y2,Board,N2), nonvar(N2), matrice(X1,Y1,Board,N1), var(N1).
+% 1 a percuté, et pas 2
+winner(Board,[X1,Y1], [X2,Y2],'2') :- matrice(X1,Y1,Board,N1), nonvar(N1), matrice(X2,Y2,Board,N2), var(N2).
+
 is1or2([]).
 is1or2([T|Q]) :- nonvar(T),(T=1; T=2), is1or2(Q).
 
-gameOver :- board(Board,_,_),is1or2(Board).
+gameOver(Move1,Move2) :- board(Board,_,_),winner(Board,Move1,Move2,W).
+% gameOver(_,_) :- board(Board,_,_),is1or2(Board),writeln('\33\[2J'), writeln('GAME OVER'), write('Le Gagnant est : '), write(W).
 
-play :- gameOver.
-play :- write('\33\[2J'),
+% play :- gameOver(), writeln('\33\[2J'), writeln('GAME OVER'), write('Le Gagnant est : '), write(W).
+
+play :- writeln('\33\[2J'),
     		board(Board, Head1, Head2), % instanciate the board from the knowledge base 
        		displayBoard, % print it
            	ia(Board, Move1,Head1), % ask the AI for a move, that is, an index for the Player 
     	    ia(Board, Move2,Head2),
+    	    not(gameOver(Move1,Move2)), 
     		playMoves(Board, Move1, Move2, NewBoard), % Play the move and get the result in a new Board
     		applyIt(Board, Head1, Head2, NewBoard, Move1, Move2), % Remove the old board from the KB and store the new one
-			sleep(0.5),
-			play.
-
+			sleep(0.5),%writeln('\n\n'), %displayBoard.
+			play, !.
+play.
+% writeln('\33\[2J')
 
