@@ -5,30 +5,28 @@
 
 server(Port) :-
         http_server(http_dispatch,
-                    [ port(Port) ]).
+                    [port(Port)]).
 
-:- http_handler(root(boardState), httpBoardState, []).
+:- http_handler(root(initialBoardState), httpInitialBoardState, []).
 
-% Convertit le board en JSON
-boardToJSON :-
-	board(Board, H1, H2),
-	format('"board":[', []),
-	boardElemToJSON(Board), 
-	format(']', []),
+% Formatte le board en JSON
+% Ne retourne que la taille d'un côté et les têtes des joueurs
+initialBoardToJSON :-
+	dim(Size),
+	format('"size":~w', [Size]),
 	format(',"heads":[', []),
+	board(_, H1, H2),
 	headToJSON(H1),
 	format(',', []),
 	headToJSON(H2),
 	format(']', []).
 
-% Convertit un élément du board en JSON et convertit le suivant
-boardElemToJSON([]).
-boardElemToJSON([H|T]) :- format('~w,', [H]), boardElemToJSON(T).
-
+% Formatte une tête d'un joueur en JSON
 headToJSON([H|[T|_]]) :- format('{"x":~w,"y":~w}', [H, T]).
 
-httpBoardState(_) :-
+% Méthode appelée sur l'URL '/initialBoardState'
+httpInitialBoardState(_) :-
 	format('Content-type: application/json~n~n', []),
 	format('{', []),
-	boardToJSON,
+	initialBoardToJSON,
 	format('}', []).
