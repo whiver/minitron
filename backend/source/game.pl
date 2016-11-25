@@ -51,8 +51,10 @@ play :- writeln('\33\[2J'),
        		displayBoard,!, % print it
            	%iaFollower(Board, Move1,Head1),!, % ask the AI for a move, that is, an index for the Player 
     	    %iaFollower(Board, Move2,Head2),!,
-           	ia(Board, Move1,Head1,1),!, % ask the AI for a move, that is, an index for the Player 
-    	    ia(Board, Move2,Head2,2),!,
+           	%ia(Board, Move1,Head1,1),!, % ask the AI for a move, that is, an index for the Player 
+    	    %ia(Board, Move2,Head2,2),!,
+    	    iaRandom2(Board, Move1, Head1),!,
+    	    iaRandom2(Board, Move2, Head2),!,
     	    not(gameOver(Move1,Move2)), % Teste si le prochain mouvement ne provoque pas la fin du jeu
     		playMoves(Board, Move1, Move2, NewBoard), % Play the move and get the result in a new Board
     		applyIt(Board, Head1, Head2, NewBoard, Move1, Move2), % Remove the old board from the KB and store the new one
