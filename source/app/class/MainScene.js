@@ -46,26 +46,28 @@ export default class MainScene {
       responseType: 'json',
     }, (err, res, response) => {
       if (response == null) window.console.error('Can\'t reach the Prolog server :(');
-      /*
-        Should contain:
-        size: int
-        heads: array, contains each player object
-          x: int -> starting at 1
-          y: int -> starting at 1
-       */
-      this.setupBoard(response.size, response.size);
+      else {
+        /*
+          Should contain:
+          size: int
+          heads: array, contains each player object
+            x: int -> starting at 1
+            y: int -> starting at 1
+         */
+        this.setupBoard(response.size, response.size);
 
-      for (let i = 0; i < response.heads.length; ++i) {
-        console.log(`Player added: ${PLAYER_NAMES[i]}.`);
+        for (let i = 0; i < response.heads.length; ++i) {
+          console.log(`Player added: ${PLAYER_NAMES[i]}.`);
 
-        const player = new Player(PLAYER_NAMES[i],
-          this.cellSize,
-          response.heads[i].x,
-          response.heads[i].y,
-        );
+          const player = new Player(PLAYER_NAMES[i],
+            this.cellSize,
+            response.heads[i].x,
+            response.heads[i].y,
+          );
 
-        this.players.push(player);
-        this.board.addChild(player);
+          this.players.push(player);
+          this.board.addChild(player);
+        }
       }
 
       Game.STAGE.addChild(this.ctr);
@@ -151,13 +153,15 @@ export default class MainScene {
       responseType: 'json',
     }, (err, res, response) => {
       if (response == null) window.console.error('Can\'t reach the Prolog server :(');
+      else {
 
-      for (let i = 0; i < response.heads.length; ++i) {
-        this.players[i].updatePosition(response.heads[i].x, response.heads[i].y);
+        for (let i = 0; i < response.heads.length; ++i) {
+          this.players[i].updatePosition(response.heads[i].x, response.heads[i].y);
+        }
+
+        // Fetch the next move
+        this.fetchNextMove();
       }
-
-      // Fetch the next move
-      this.fetchNextMove();
     });
   }
 
