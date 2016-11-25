@@ -82,10 +82,16 @@ module.exports = {
   resolve: {
     extensions: ['', '.css', '.scss', '.html', '.js'],
     modulesDirectories: ['node_modules', 'bower_components'],
+    alias: {
+      'request$': "xhr",
+    },
   },
 
   eslint: {
     configFile: '.eslintrc',
   },
 
+  node: {
+    fs: "empty"
+  },
 };

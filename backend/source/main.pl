@@ -1,3 +1,3 @@
 %Fichier main, qui a pour role de lancer les autres fichiers
 
-:- ['Tests'/iaRandom_test,'Tests'/game_test,utils, affichage, game, http, iaRandom, init].
+:- [utils,affichage, game, http, iaRandom, init,iaFollower,'Tests'/iaRandom_test,'Tests'/game_test].

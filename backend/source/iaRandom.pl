@@ -4,6 +4,7 @@
 % Dans le cas où toutes les cases autour de l'IA lui appartiennent 
 % elle choisit l'une d'elles 
 % Le choix des cases est aléatoire parmis les cases possibles
+% Possible d'aller à droit et de resortir à gauche à la prochaine ligne ??????
 
 % Les prochains déplacements possibles
 move(0,X,Y,NewX,NewY) :- NewX is X-1, NewY is Y.
@@ -12,7 +13,7 @@ move(2,X,Y,NewX,NewY) :- NewX is X+1, NewY is Y.
 move(3,X,Y,NewX,NewY) :- NewX is X, NewY is Y-1.
 
 % Trouver les cases libres autour d'une case
-mien(Board,X,Y,Player) :- matrice(X, Y, Board, Val), nonvar(Val), Val is Player.
+mien(Board,X,Y,Player) :- dim(N),not(out(X,Y,N)), matrice(X, Y, Board, Val), nonvar(Val), Val is Player.
 
 isInSet(Board,X,Y,Player,[Head],Head) :- move(Head,X,Y,NewX,NewY), not(mien(Board,NewX,NewY,Player)).
 isInSet(Board,X,Y,Player,[],Head) :- move(Head,X,Y,NewX,NewY), mien(Board,NewX,NewY,Player).

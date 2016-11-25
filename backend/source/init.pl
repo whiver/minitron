@@ -11,4 +11,3 @@ init :- assert(dim(10)),
 % Initialisation 2
 % Ne mettre que les têtes représentatnt les deux joueurs
 initList(List, Size) :- length(List,Size). 
-

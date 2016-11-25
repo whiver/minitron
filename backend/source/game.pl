@@ -18,7 +18,7 @@ applyIt(Board, Head1, Head2, NewBoard, NewHead1, NewHead2) :- retract(board(Boar
 % On arrive à la fin du jeu dès que l'un des joueurs essaye de sortir du plateau, ou dès qu'il marche sur ça trainé ou celle de
 % l'autre joueur
 
-out(X,Y,N) :- X>N, Y>N, X<1, Y<1.
+out(X,Y,N) :- X>N; Y>N; X<1; Y<1.
 
 % Les deux mouvements sont Out
 winner(Board,[X1,Y1], [X2,Y2],'Match nul') :-  dim(N), out(X1,Y1,N), out(X2,Y2,N). 
@@ -30,6 +30,8 @@ winner(Board,[X1,Y1], [X2,Y2],'1') :-  dim(N), out(X2,Y2,N), not(out(X1,Y1,N)), 
 winner(Board,[X1,Y1], [X2,Y2],'Match nul') :-  dim(N), out(X2,Y2,N), not(out(X1,Y1,N)), matrice(X1,Y1,Board,N1), nonvar(N1).
 % Le 1 est Out, le 2 est dedans mais a percuté 1 ou 2
 winner(Board,[X1,Y1], [X2,Y2],'Match nul') :-  dim(N), out(X1,Y1,N), not(out(X2,Y2,N)), matrice(X2,Y2,Board,N2), nonvar(N2).
+% Les deux sont dedans, et veulent la même case
+winner(Board,[X,Y], [X,Y],'Match nul').
 % Les deux sont dedans, les deux ont percuté 1 ou 2 
 winner(Board,[X1,Y1], [X2,Y2],'Match nul') :- matrice(X1,Y1,Board,N1), nonvar(N1),matrice(X2,Y2,Board,N2), nonvar(N2).
 % 2 a percuté, et pas 1
@@ -47,12 +49,21 @@ play :- writeln('\33\[2J'),
     		board(Board, Head1, Head2), % instanciate the board from the knowledge base 
        		not(gameOver(Board)), % Teste si le plateau n'est pas rempli
        		displayBoard,!, % print it
-           	ia(Board, Move1,Head1,1), % ask the AI for a move, that is, an index for the Player 
-    	    ia(Board, Move2,Head2,2),
+           	%iaFollower(Board, Move1,Head1),!, % ask the AI for a move, that is, an index for the Player 
+    	    %iaFollower(Board, Move2,Head2),!,
+           	ia(Board, Move1,Head1,1),!, % ask the AI for a move, that is, an index for the Player 
+    	    ia(Board, Move2,Head2,2),!,
     	    not(gameOver(Move1,Move2)), % Teste si le prochain mouvement ne provoque pas la fin du jeu
     		playMoves(Board, Move1, Move2, NewBoard), % Play the move and get the result in a new Board
     		applyIt(Board, Head1, Head2, NewBoard, Move1, Move2), % Remove the old board from the KB and store the new one
 			sleep(0.5),
 			play.
 
-
+% Joue une itération du jeu => n'est pas récursive
+playStep :- gameOver.
+playStep :- 
+	board(Board, Head1, Head2), % instanciate the board from the knowledge base 
+   	ia(Board, Move1,Head1), % ask the AI for a move, that is, an index for the Player 
+    ia(Board, Move2,Head2),
+	playMoves(Board, Move1, Move2, NewBoard), % Play the move and get the result in a new Board
+	applyIt(Board, Head1, Head2, NewBoard, Move1, Move2). % Remove the old board from the KB and store the new one
