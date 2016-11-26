@@ -39,11 +39,18 @@ winner(Board,[X1,Y1], [X2,Y2],'1') :- matrice(X2,Y2,Board,N2), nonvar(N2), matri
 % 1 a percuté, et pas 2
 winner(Board,[X1,Y1], [X2,Y2],'2') :- matrice(X1,Y1,Board,N1), nonvar(N1), matrice(X2,Y2,Board,N2), var(N2).
 
+% Le match doit continuer car aucun joueur n'a perdu
+winner(Board, [X1,Y1], [X2,Y2], 'CONTINUE') :-
+    dim(N),
+    not(out(X1, Y1, N)), not(out(X2, Y2, N)),
+    matrice(X1, Y1, Board, N1), var(N1),
+    matrice(X2, Y2, Board, N2), var(N2).
+
 is1or2([]).
 is1or2([T|Q]) :- nonvar(T),(T=1; T=2), is1or2(Q).
 
-gameOver(Board) :- is1or2(Board), writeln('Match nul').
-gameOver(Move1,Move2) :- board(Board,_,_),winner(Board,Move1,Move2,W),writeln('GAME OVER\nLe Gagnant est : '+W).
+gameOver(Board, W) :- is1or2(Board), W = 'Match nul'.
+gameOver(Move1,Move2, W) :- board(Board,_,_),winner(Board,Move1,Move2,W).
 
 play :- writeln('\33\[2J'),
     		board(Board, Head1, Head2), % instanciate the board from the knowledge base 
@@ -61,11 +68,22 @@ play :- writeln('\33\[2J'),
 			sleep(0.5),
 			play.
 
-% Joue une itération du jeu => n'est pas récursive
-playStep :- gameOver.
-playStep :- 
-	board(Board, Head1, Head2), % instanciate the board from the knowledge base 
-   	ia(Board, Move1,Head1), % ask the AI for a move, that is, an index for the Player 
-    ia(Board, Move2,Head2),
-	playMoves(Board, Move1, Move2, NewBoard), % Play the move and get the result in a new Board
-	applyIt(Board, Head1, Head2, NewBoard, Move1, Move2). % Remove the old board from the KB and store the new one
+ai('AI_FOLLOWER', Board, Move, Head) :- iaFollower(Board, Move, Head).
+ai('AI_RANDOM2', Board, Move, Head) :- iaRandom2(Board, Move, Head).
+
+checkPlay(Move1, Move2, State) :-
+    State = 'CONTINUE', gameOver(Move1, Move2, State),
+    board(Board, H1, H2),
+    playMoves(Board, Move1, Move2, NewBoard),
+    applyIt(Board, H1, H2, NewBoard, Move1, Move2).
+
+checkPlay(Move1, Move2, State) :-
+    gameOver(Move1, Move2, State).
+
+playOnce(State) :-
+    board(Board, H1, H2),
+    playerAI(1, P1AI),
+    ai(P1AI, Board, Move1, H1), !,
+    playerAI(2, P2AI),
+    ai(P2AI, Board, Move2, H2), !,
+    checkPlay(Move1, Move2, State).

@@ -1,4 +1,4 @@
-:- dynamic board/3, dim/1. % permet l'assertion et le retrait de faits board/3 (Board + les 2 têtes)
+:- dynamic board/3, dim/1, playerAI/2. % permet l'assertion et le retrait de faits board/3 (Board + les 2 têtes)
 
 %Pour recuperer un element d une liste vue comme une matrice
 extraire(X,Y,R) :- dim(D), R is ((X*D)+Y).

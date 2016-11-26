@@ -2,68 +2,60 @@
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_cors)).
+:- use_module(library(http/http_parameters)).
 
 server(Port) :-
         http_server(http_dispatch,
                     [port(Port)]),
         set_setting(http:cors, ['*']).
 
+:- http_handler(root(start), httpStartHandler, []).
+httpStartHandler(Request) :-
+    cors_enable,
+    getStartRequestParams(Request,
+                          BoardSize,
+                          P1X, P1Y,
+                          P2X, P2Y,
+                          P1AI,
+                          P2AI),
+    start(BoardSize,
+          [P1X, P1Y],
+          [P2X, P2Y],
+          P1AI,
+          P2AI).
 
-% Méthode appelée sur l'URL '/initialBoardState'
-% Retourne l'état initial du plateau (taille et position des têtes)
-:- http_handler(root(initialBoardState), httpInitialBoardState, []).
-httpInitialBoardState(_) :-
-	cors_enable,
-	format('Content-type: application/json~n~n', []),
-	format('{', []),
-	initialBoardToJSON,
-	format('}', []).
+getStartRequestParams(Request,
+                      BoardSize,
+                      P1X, P1Y,
+                      P2X, P2Y,
+                      P1AI,
+                      P2AI) :-
+    http_parameters(Request,
+                    [boardSize(BoardSize, [nonneg]),
+                     p1X(P1X, [between(1, BoardSize), default(1)]),
+                     p1Y(P1Y, [between(1, BoardSize), default(1)]),
+                     p2X(P2X, [between(1, BoardSize), default(BoardSize)]),
+                     p2Y(P2Y, [between(1, BoardSize), default(BoardSize)]),
+                     p1AI(P1AI, [oneof(['AI_RANDOM',
+                                        'AI_RANDOM2',
+                                        'AI_FOLLOWER'])]),
+                     p2AI(P2AI, [oneof(['AI_RANDOM',
+                                        'AI_RANDOM2',
+                                        'AI_FOLLOWER'])])]).
 
-% Méthode appelée sur l'URL '/nextBoardState'
-% Joue une itération et retourne la nouvelle position des têtes
-:- http_handler(root(nextBoardState), httpNextBoardState, []).
-httpNextBoardState(_) :-
-	cors_enable,
-	format('Content-type: application/json~n~n', []),
-	format('{', []),
-	nextBoardToJSON,
-	format('}', []).
+:- http_handler(root(play), httpPlayHandler, []).
+httpPlayHandler(_) :-
+    cors_enable,
+    playOnce(State),
+    sendGameState(State).
 
-% Retourne la taille d'un côté du board et les têtes des joueurs en JSON
-initialBoardToJSON :-
-	sizeToJSON,
-	format(',', []),
-	headsToJSON.
-
-% Joue une itération et retourne la nouvelle position des têtes en JSON
-% WARNING: Erreur si GameOver
-nextBoardToJSON :-
-	playStep,
-	statusToJSON,
-	format(',', []),
-	headsToJSON.
-
-% Formate la taille d'un côté du board en JSON
-sizeToJSON :-
-	dim(Size),
-	format('"size":~w', [Size]).
-
-% Formate les têtes des joueurs en JSON
-headsToJSON :-
-	format('"heads":[', []),
-	board(_, H1, H2),
-	headToJSON(H1),
-	format(',', []),
-	headToJSON(H2),
-	format(']', []).
-
-% Formate une tête d'un joueur en JSON
-headToJSON([H|[T|_]]) :- format('{"x":~w,"y":~w}', [H, T]).
-
-% Formate le statut de la partie (match nul, victoire J2, etc.) en JSON
-% 0  : match en cours
-% -1 : match nul
-% 1  : victoire joueur 1
-% 2  : victoire joueur 2
-statusToJSON :-
-	format('"status":0').
+sendGameState(State) :-
+    format('Content-type: application/json~n~n', []),
+    format('{', []),
+    format('"state":0,'),
+    board(_, [P1X,P1Y], [P2X,P2Y]),
+    format('"p1X":~w,', [P1X]),
+    format('"p1Y":~w,', [P1Y]),
+    format('"p2X":~w,', [P2X]),
+    format('"p2Y":~w', [P2Y]),
+    format('}', []).
