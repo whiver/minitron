@@ -33,9 +33,9 @@ getStartRequestParams(Request,
     http_parameters(Request,
                     [boardSize(BoardSize, [nonneg]),
                      p1X(P1X, [between(1, BoardSize), default(1)]),
-                     p1Y(P1Y, [between(1, BoardSize), default(1)]),
+                     p1Y(P1Y, [between(1, BoardSize), default(P1X)]),
                      p2X(P2X, [between(1, BoardSize), default(BoardSize)]),
-                     p2Y(P2Y, [between(1, BoardSize), default(BoardSize)]),
+                     p2Y(P2Y, [between(1, BoardSize), default(P2X)]),
                      p1AI(P1AI, [oneof(['AI_RANDOM',
                                         'AI_RANDOM2',
                                         'AI_FOLLOWER'])]),
@@ -43,8 +43,8 @@ getStartRequestParams(Request,
                                         'AI_RANDOM2',
                                         'AI_FOLLOWER'])])]).
 
-:- http_handler(root(play), httpPlayHandler, []).
-httpPlayHandler(_) :-
+:- http_handler(root(playOnce), httpPlayOnceHandler, []).
+httpPlayOnceHandler(_) :-
     cors_enable,
     playOnce(State),
     sendGameState(State).
@@ -52,7 +52,7 @@ httpPlayHandler(_) :-
 sendGameState(State) :-
     format('Content-type: application/json~n~n', []),
     format('{', []),
-    format('"state":0,'),
+    format('"state":~w,', [State]),
     board(_, [P1X,P1Y], [P2X,P2Y]),
     format('"p1X":~w,', [P1X]),
     format('"p1Y":~w,', [P1Y]),
