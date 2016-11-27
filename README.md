@@ -34,8 +34,8 @@ To download the dependencies of the project:
         - P1Y : Position initiale en Y du joueur 2 (commence à 1)
         - P2X : Position initiale en X du joueur 2 (commence à 1) => Par défaut prend la valeur BoardSize
         - P2Y : Position initiale en Y du joueur 2 (commence à 2) => Par défaut prend la valeur BoardSize
-        - P1AI : IA du joueur 1 (ex : AI_FOLLOWER', AI_RANDOM2)
-        - P2AI : IA du joueur 2 (ex : AI_FOLLOWER', AI_RANDOM2)
+        - P1AI : IA du joueur 1 (ex : AI_FOLLOWER, AI_RANDOM2)
+        - P2AI : IA du joueur 2 (ex : AI_FOLLOWER, AI_RANDOM2)
         
         Ne retourne rien (Status 204 No Content)
 
