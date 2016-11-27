@@ -38,14 +38,22 @@ export default class MainScene {
     this.bg.scaleX = this.bg.scaleY = scale;
     this.ctr.addChild(this.bg);
 
+    const boardSize = 10;
+    const p1X = 1;
+    const p1Y = 1;
+    const p2X = 10;
+    const p2Y = 10;
+    const p1AI = 'AI_FOLLOWER';
+    const p2AI = 'AI_RANDOM2';
+
+    const startURL = `http://localhost:8000/start?boardSize=${boardSize}&p1X=${p1X}&p1Y=${p1Y}&p2X=${p2X}&p2Y=${p2Y}&p1AI=${p1AI}&p2AI=${p2AI}`;
+
     // Init the server connection
     utils.request({
-      url: 'http://localhost:8000/initialBoardState',
+      url: startURL,
       method: 'GET',
-      json: true,
-      responseType: 'json',
-    }, (err, res, response) => {
-      if (response == null) window.console.error('Can\'t reach the Prolog server :(');
+    }, (err, res) => {
+      if (res.statusCode !== 204) window.console.error('Can\'t reach the Prolog server :(');
       else {
         /*
           Should contain:
@@ -54,20 +62,27 @@ export default class MainScene {
             x: int -> starting at 1
             y: int -> starting at 1
          */
-        this.setupBoard(response.size, response.size);
+        this.setupBoard(boardSize, boardSize);
 
-        for (let i = 0; i < response.heads.length; ++i) {
-          console.log(`Player added: ${PLAYER_NAMES[i]}.`);
-
-          const player = new Player(PLAYER_NAMES[i],
+        console.log(`Player added: ${PLAYER_NAMES[0]}.`);
+        const player1 = new Player(PLAYER_NAMES[0],
             this.cellSize,
-            response.heads[i].x,
-            response.heads[i].y,
-          );
+            p1X,
+            p1Y,
+            );
 
-          this.players.push(player);
-          this.board.addChild(player);
-        }
+        this.players.push(player1);
+        this.board.addChild(player1);
+
+        console.log(`Player added: ${PLAYER_NAMES[1]}.`);
+        const player2 = new Player(PLAYER_NAMES[1],
+            this.cellSize,
+            p2X,
+            p2Y,
+            );
+
+        this.players.push(player2);
+        this.board.addChild(player2);
       }
 
       Game.STAGE.addChild(this.ctr);
@@ -147,20 +162,26 @@ export default class MainScene {
    */
   fetchNextMove() {
     utils.request({
-      url: 'http://localhost:8000/nextBoardState',
+      url: 'http://localhost:8000/playOnce',
       method: 'GET',
       json: true,
       responseType: 'json',
     }, (err, res, response) => {
       if (response == null) window.console.error('Can\'t reach the Prolog server :(');
-      else {
+      else if (response.state === 'CONTINUE') {
+        this.players[0].updatePosition(response.p1X, response.p1Y);
+        this.players[1].updatePosition(response.p2X, response.p2Y);
 
+        /*
         for (let i = 0; i < response.heads.length; ++i) {
           this.players[i].updatePosition(response.heads[i].x, response.heads[i].y);
         }
+        */
 
         // Fetch the next move
         this.fetchNextMove();
+      } else {
+        console.log(`Game ended: ${response.state}`);
       }
     });
   }
