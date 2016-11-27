@@ -18,4 +18,7 @@ iaFollower(Board, [MoveX,MoveY|_], [X,Y|_]) :- estObstacle( Board,X, Y-1), ((not
 % si obstacle a droite, on tente haut ou bas
 iaFollower(Board, [MoveX,MoveY|_], [X,Y|_]) :- estObstacle( Board,X, Y+1), ((not(estObstacle( Board,X-1, Y)), MoveX is X-1, MoveY is Y); (not(estObstacle( Board,X+1, Y)), MoveX is X+1, MoveY is Y)).
 
-% TODO : ajouter un prédicat pour gérer le premier coup si pas d'obstacle
+% TODO : discuter : le rendre independant en copiant le code d ia Random 2 ?
+
+% Copie d'ia Random si jamais il n y a pas d'obstacle a suivre
+iaFollower(Board, [M1,M2],[P1,P2]) :- iaRandom2(Board, [M1,M2],[P1,P2],).
