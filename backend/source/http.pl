@@ -52,7 +52,7 @@ httpPlayOnceHandler(_) :-
 sendGameState(State) :-
     format('Content-type: application/json~n~n', []),
     format('{', []),
-    format('"state":~w,', [State]),
+    format('"state":"~w",', [State]),
     board(_, [P1X,P1Y], [P2X,P2Y]),
     format('"p1X":~w,', [P1X]),
     format('"p1Y":~w,', [P1Y]),
