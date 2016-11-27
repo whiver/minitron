@@ -52,23 +52,28 @@ is1or2([T|Q]) :- nonvar(T),(T=1; T=2), is1or2(Q).
 gameOver(Board, W) :- is1or2(Board), W = 'DRAW'.
 gameOver(Move1,Move2, W) :- board(Board,_,_),winner(Board,Move1,Move2,W).
 
+% Appelle une nouvelle itération de jeu si la partie doit continuer (pas de perdant)
+% State -> État de la partie
+% TimeStep -> Intervale de temps en secondes avant la prochaine itération
 playNext(State, TimeStep) :-
     State = 'CONTINUE',
     sleep(TimeStep),
     playAuto(TimeStep).
 
+% Affiche le match nul
 playNext('DRAW', _) :-
     writeln('The game ends with a draw!').
 
+% Affiche la victoire du joueur 1
 playNext('WINNER1', _) :-
     writeln('Player 1 wins the game!').
 
+% Affiche la victoire du joueur 2
 playNext('WINNER2', _) :-
     writeln('Player 2 wins the game!').
 
-playNext(State, _) :-
-    format('State:~w', [State]).
-
+% Joue automatiquement la partie dans la console, en enchaînant les itérations suivant un intervale de temps
+% TimeStep -> Intervale de temps en secondes entre chaque itération de jeu
 playAuto(TimeStep) :-
     writeln('\33\[2J'),
     board(Board, H1, H2),
@@ -80,22 +85,44 @@ playAuto(TimeStep) :-
     displayBoard,
     playNext(State, TimeStep).
 
+% Demande un coup à l'IA "Follower" à partir d'une position du joueur.
+% Board -> Plateau de jeu
+% Move -> Coup que va jouer l'IA
+% Head -> Position courante de la tête du joueur
 ai('AI_FOLLOWER', Board, Move, Head) :- iaFollower(Board, Move, Head).
+
+% Demande un coup à l'IA "Random2" à partir d'une position du joueur.
+% Board -> Plateau de jeu
+% Move -> Coup que va jouer l'IA
+% Head -> Position courante de la tête du joueur
 ai('AI_RANDOM2', Board, Move, Head) :- iaRandom2(Board, Move, Head).
 
+% Applique les coups au plateau
+% Move1 -> Coup du joueur 1
+% Move2 -> Coup du joueur 2
 applyPlay(Move1, Move2) :-
     board(Board, H1, H2),
     playMoves(Board, Move1, Move2, NewBoard),
     applyIt(Board, H1, H2, NewBoard, Move1, Move2).
 
+% Vérifie le résultat des coups et n'applique ces coups que si ce résultat est 'CONTINUE'
+% Move1 -> Coup du joueur 1
+% Move2 -> Coup du joueur 2
+% State -> État résultant des coups à jouer
 checkPlay(Move1, Move2, State) :-
     State = 'CONTINUE',
     gameOver(Move1, Move2, State),
     applyPlay(Move1, Move2).
 
+% Vérifie le résultat des coups et donne l'état correspondant.
+% Move1 -> Coup du joueur 1
+% Move2 -> Coup du joueur 2
+% State -> État résultat des coups à jouer
 checkPlay(Move1, Move2, State) :-
     gameOver(Move1, Move2, State).
 
+% Joue une itération du jeu et retourne l'état résultant
+% State -> État résultant de l'itération (vals : 'CONTINUE', 'DRAW', 'WINNER1', 'WINNER2').
 playOnce(State) :-
     board(Board, H1, H2),
     playerAI(1, P1AI),
