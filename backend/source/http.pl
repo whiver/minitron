@@ -16,6 +16,7 @@ server(Port) :-
 % Démarre la partie à partir des paramètres passés avec la requête
 % Request -> Requête HTTP de démarrage de la partie
 httpStartHandler(Request) :-
+    cors_enable,
     getStartRequestParams(Request,
                           BoardSize,
                           P1X, P1Y,
