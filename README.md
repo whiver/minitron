@@ -33,7 +33,8 @@ prolog -l backend/source/main.pl
 server(Port).
     - Port : numéro de port sur lequel le serveur va écouter
     
-Dans un navigateur (ou wget ou autre) : http://localhost:Port/start?boardSize=BoarSize&p1X=P1X&p1Y=P1Y&p2X=P2X&p2Y=P2Y&p1AI=AI_FOLLOWER&p2AI=AI_RANDOM2
+Dans un navigateur (ou wget ou autre) : 
+http://localhost:Port/start?boardSize=BoarSize&p1X=P1X&p1Y=P1Y&p2X=P2X&p2Y=P2Y&p1AI=AI_FOLLOWER&p2AI=AI_RANDOM2
     - BoardSize : Taille d'un côté du plateau de jeu
     - P1X : Position initiale en X du joueur 1 (commence à 1)
     - P1Y : Position initiale en Y du joueur 2 (commence à 1)
