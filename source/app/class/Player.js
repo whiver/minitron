@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions, import/no-unresolved */
-import { Shape, Container } from 'EaselJS';
+import { Shape, Container, Shadow } from 'EaselJS';
 
 const PLAYER_COLORS = [
   '#FF0D15',
@@ -35,6 +35,10 @@ export default class Player extends Container {
   init(x, y) {
     this.playerShape = new Shape();
     this.addChild(this.playerShape);
+
+    // Shadow effect
+    this.playerShape.shadow = new Shadow(PLAYER_COLORS[this.id], 0, 0, this.cellSize / 3);
+
     this.updatePosition(x, y);
   }
 

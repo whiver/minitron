@@ -7,7 +7,7 @@ import Player from './Player';
 
 /* Game constants */
 const GRID_MARGIN = 50;
-const GRID_STROKE_WIDTH = 5;
+const GRID_STROKE_WIDTH = 3;
 const PLAYER_NAMES = [
   'Jarvis',
   'xXxRaptorxXx',
@@ -140,7 +140,7 @@ export default class MainScene {
 
     // Draw the grid
     grid.graphics.setStrokeStyle(GRID_STROKE_WIDTH).beginStroke('#fff');
-    grid.alpha = 0.3;
+    grid.alpha = 0.2;
     grid.graphics.rect(0, 0, this.board.width, this.board.height);
 
     for (let col = 1; col < cols; ++col) {
