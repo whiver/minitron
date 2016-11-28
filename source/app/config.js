@@ -21,6 +21,6 @@ module.exports = {
     height: 1080,
   },
   stage: {
-    fps: 40,
+    fps: 20,
   },
 };
