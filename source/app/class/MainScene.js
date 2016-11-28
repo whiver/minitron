@@ -38,7 +38,7 @@ export default class MainScene {
     this.bg.scaleX = this.bg.scaleY = scale;
     this.ctr.addChild(this.bg);
 
-    const boardSize = 10;
+    const boardSize = 30;
     const p1X = 1;
     const p1Y = 1;
     const p2X = 10;

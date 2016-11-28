@@ -20,7 +20,6 @@ let currentId = 0;
 export default class Player extends Container {
   constructor(name, size, x, y) {
     super();
-    this.position = [];
     this.name = name;
     this.id = currentId++;
     this.cellSize = size;
@@ -35,13 +34,8 @@ export default class Player extends Container {
    */
   init(x, y) {
     this.playerShape = new Shape();
-    this.playerShape.graphics.beginStroke(PLAYER_COLORS[this.id]);
-    this.playerShape.graphics.setStrokeStyle(this.cellSize);
-    this.position.push([x, y]);
-    this.playerShape.graphics
-      .moveTo(x * this.cellSize, y * this.cellSize)
-      .rect(this.cellSize * (x - 0.5), this.cellSize * (y - 0.5), 1, 1);
     this.addChild(this.playerShape);
+    this.updatePosition(x, y);
   }
 
   /**
@@ -51,9 +45,10 @@ export default class Player extends Container {
    */
   updatePosition(x, y) {
     console.log(`New position for player ${this.name}: (${x},${y}).`);
-    this.position.push([x, y]);
 
     // Draw the new position
-    this.playerShape.graphics.lineTo(x * this.cellSize, y * this.cellSize);
+    this.playerShape.graphics.beginStroke(PLAYER_COLORS[this.id]);
+    this.playerShape.graphics.setStrokeStyle(this.cellSize);
+    this.playerShape.graphics.rect(this.cellSize * (x - 0.5), this.cellSize * (y - 0.5), 1, 1);
   }
 }
