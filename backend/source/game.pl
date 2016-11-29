@@ -46,11 +46,11 @@ winner(Board, [X1,Y1], [X2,Y2], 'CONTINUE') :-
     matrice(X1, Y1, Board, N1), var(N1),
     matrice(X2, Y2, Board, N2), var(N2).
 
-is1or2([]).
-is1or2([T|Q]) :- nonvar(T),(T=1; T=2), is1or2(Q).
-
-gameOver(Board, W) :- is1or2(Board), W = 'DRAW'.
-gameOver(Move1,Move2, W) :- board(Board,_,_),winner(Board,Move1,Move2,W).
+% Détermine l'état du jeu si les deux coups sont joués
+% Move1 -> Coup du joueur 1
+% Move2 -> Coup du joueur 2
+% W -> Étqt du jeu si les deux coups sont joués
+gameOver(Move1,Move2, W) :- board(Board,_,_), winner(Board,Move1,Move2,W).
 
 % Appelle une nouvelle itération de jeu si la partie doit continuer (pas de perdant)
 % State -> État de la partie
