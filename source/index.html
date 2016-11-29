@@ -2,12 +2,43 @@
 <html>
 
 <head>
-	<title>CreateJS Starter</title>
+	<title>Minitron</title>
 	<link rel="stylesheet" href="assets/styles.css" />
 </head>
 
 <body>
 	<canvas id="main"></canvas>
+
+	<!--Game Menu-->
+	<div id="menu">
+		<div class="menu-inner">
+			<div>
+				<p><label for="board-size">Board size</label> <input type="number" id="board-size" min="0" value="20"></p>
+			</div>
+			<div>
+				<h2>Player 1</h2>
+				<p><label for="player-1-config">AI strategy :</label></p>
+				<select  id="player-1-config">
+					<option value="AI_RANDOM2">Random</option>
+					<option value="AI_FOLLOWER">Follow the walls</option>
+				</select>
+				<p><label for="player-1-x">Position</label> (<input type="number" placeholder="x" id="player-1-x"/>, <input type="number" placeholder="y" id="player-1-y"/>)</p>
+			</div>
+			<div>
+				<h2>Player 2</h2>
+				<p><label for="player-2-config">AI strategy :</label></p>
+				<select id="player-2-config">
+					<option value="AI_RANDOM2">Random</option>
+					<option value="AI_FOLLOWER">Follow the walls</option>
+				</select>
+				<p><label for="player-2-x">Position</label> (<input type="number" placeholder="x" id="player-2-x"/>, <input type="number" placeholder="y" id="player-2-y"/>)</p>
+			</div>
+		</div>
+		<div class="menu-footer">
+			<button id="start-btn">Start!</button>
+		</div>
+	</div>
+
 
 	<script src="assets/app.js"></script>
 </body>

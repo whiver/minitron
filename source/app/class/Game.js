@@ -5,7 +5,7 @@ import { Stage, Ticker } from 'EaselJS';
 import config from '../config';
 import utils from '../modules/utils';
 import Preload from './Preload';
-import MainScene from './MainScene';
+import MenuScene from './MenuScene';
 
 /** Main class representing game world. */
 export default class Game {
@@ -18,7 +18,7 @@ export default class Game {
       this.init(resolve);
     })
     .then(() => new Preload())
-    .then(() => new MainScene());
+    .then(() => new MenuScene());
   }
 
   /**

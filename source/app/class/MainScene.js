@@ -15,20 +15,20 @@ const PLAYER_NAMES = [
   'Unicoooorn',
 ];
 
-/** MainMenu showing game menu */
+/** Show game view */
 export default class MainScene {
   /**
    * Calling init function
    */
-  constructor() {
+  constructor(boardSize = 30, p1X = 1, p1Y = 1, p2X = 10, p2Y = 10, p1AI = 'AI_FOLLOWER', p2AI = 'AI_RANDOM2') {
     this.players = [];
-    this.init();
+    this.init(boardSize, p1X, p1Y, p2X, p2Y, p1AI, p2AI);
   }
 
   /**
    * Create mainmenu container with title object
    */
-  init() {
+  init(boardSize, p1X, p1Y, p2X, p2Y, p1AI, p2AI) {
     this.ctr = utils.drawCtr();
 
     this.bg = new Bitmap(Game.IMAGES.mainSceneBg);
@@ -37,14 +37,6 @@ export default class MainScene {
       config.canvas.height / this.bg.image.height);
     this.bg.scaleX = this.bg.scaleY = scale;
     this.ctr.addChild(this.bg);
-
-    const boardSize = 30;
-    const p1X = 1;
-    const p1Y = 1;
-    const p2X = 10;
-    const p2Y = 10;
-    const p1AI = 'AI_FOLLOWER';
-    const p2AI = 'AI_RANDOM2';
 
     const startURL = `http://localhost:8000/start?boardSize=${boardSize}&p1X=${p1X}&p1Y=${p1Y}&p2X=${p2X}&p2Y=${p2Y}&p1AI=${p1AI}&p2AI=${p2AI}`;
 
@@ -86,39 +78,10 @@ export default class MainScene {
       }
 
       Game.STAGE.addChild(this.ctr);
-
-      // Add the "press enter" message
-      this.beginOnEnter();
+      this.fetchNextMove();
     });
   }
 
-  beginOnEnter() {
-    const text = utils.drawTextShape(
-      0,
-      0,
-      config.canvas.width,
-      100,
-      '#F7F7F7',
-      'Press Enter to start the game',
-      'black',
-      '50px Ubuntu',
-    );
-    text.alpha = 0.8;
-
-    this.ctr.addChild(text);
-    const callback = (event) => {
-      if (event.keyCode === 13) {
-        window.console.log('Game started.');
-        this.ctr.removeChild(text);
-        this.fetchNextMove();
-        window.removeEventListener('keypress', callback);
-        return false; // returning false will prevent the event from bubbling up.
-      }
-
-      return true;
-    };
-    window.addEventListener('keypress', callback);
-  }
 
   /**
    * Draw the game grid on the scene

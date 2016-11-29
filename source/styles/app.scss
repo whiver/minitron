@@ -11,3 +11,51 @@ canvas {
 	display: block;
 	margin: auto;
 }
+
+.menu-inner {
+	margin-top: 3em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.menu-inner > * {
+	margin: 0 1em;
+}
+
+#menu {
+	background-color: rgba(255, 255, 255, 0.7);
+	position: absolute;
+	height: 100%;
+	max-width: 1920px;
+	width: 100%;
+	top: 0;
+	z-index: 2;
+	display: none;
+}
+
+.menu-footer {
+	width: 100%;
+}
+
+#start-btn {
+	margin: 2em auto;
+	display: block;
+	font-size: 3em;
+	background-color: #B0EE69;
+	border: none;
+	box-shadow: 1px 1px 7px #759c4b;
+	transition: all ease 0.4s;
+	cursor: pointer;
+	border-radius: 2px;
+	color: #2e2e2e;
+}
+
+#start-btn:hover {
+	box-shadow: 1px 1px 20px #759c4b;
+	background-color: #a1db63;
+}
+
+#menu input[type=number] {
+	width: 2.5em;
+}
