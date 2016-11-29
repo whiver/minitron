@@ -26,4 +26,4 @@ whichSet(Board,X,Y,Player,Set) :- isInSet(Board,X,Y,Player,S0,0),isInSet(Board,X
 nextMove(Board,X,Y,NewX,NewY,Player) :- whichSet(Board,X,Y,Player,Set),random_member(N,Set), move(N,X,Y,NewX,NewY).
 nextMove(Board,X,Y,NewX,NewY,Player) :- whichSet(Board,X,Y,Player,Set),Set = [], random_member(N,[0,1,2,3]), move(N,X,Y,NewX,NewY).
 
-ia(Board, [M1,M2],[P1,P2],Player) :- dim(N),nextMove(Board,P1,P2,M1,M2,Player).
+ia(Board, [M1,M2],[P1,P2],Player) :- nextMove(Board,P1,P2,M1,M2,Player).

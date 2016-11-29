@@ -21,4 +21,4 @@ iaFollower(Board, [MoveX,MoveY|_], [X,Y|_]) :- estObstacle( Board,X, Y+1), ((not
 % TODO : discuter : le rendre independant en copiant le code d ia Random 2 ?
 
 % Copie d'ia Random si jamais il n y a pas d'obstacle a suivre
-iaFollower(Board, [M1,M2],[P1,P2]) :- iaRandom2(Board, [M1,M2],[P1,P2],).
+iaFollower(Board, [M1,M2],[P1,P2]) :- iaRandom2(Board, [M1,M2],[P1,P2]).

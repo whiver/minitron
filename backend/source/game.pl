@@ -21,7 +21,7 @@ applyIt(Board, Head1, Head2, NewBoard, NewHead1, NewHead2) :- retract(board(Boar
 out(X,Y,N) :- X>N; Y>N; X<1; Y<1.
 
 % Les deux mouvements sont Out
-winner(Board,[X1,Y1], [X2,Y2],'DRAW') :-  dim(N), out(X1,Y1,N), out(X2,Y2,N). 
+winner(_,[X1,Y1], [X2,Y2],'DRAW') :-  dim(N), out(X1,Y1,N), out(X2,Y2,N). 
 % Le 1 est Out, le 2 est à bon.
 winner(Board,[X1,Y1], [X2,Y2],'WINNER2') :-  dim(N), out(X1,Y1,N), not(out(X2,Y2,N)), matrice(X2,Y2,Board,N2), var(N2).
 % Le 2 est Out, le 1 n'est bon.
@@ -31,7 +31,7 @@ winner(Board,[X1,Y1], [X2,Y2],'DRAW') :-  dim(N), out(X2,Y2,N), not(out(X1,Y1,N)
 % Le 1 est Out, le 2 est dedans mais a percuté 1 ou 2
 winner(Board,[X1,Y1], [X2,Y2],'DRAW') :-  dim(N), out(X1,Y1,N), not(out(X2,Y2,N)), matrice(X2,Y2,Board,N2), nonvar(N2).
 % Les deux sont dedans, et veulent la même case
-winner(Board,[X,Y], [X,Y],'DRAW').
+winner(_,[X,Y], [X,Y],'DRAW').
 % Les deux sont dedans, les deux ont percuté 1 ou 2 
 winner(Board,[X1,Y1], [X2,Y2],'DRAW') :- matrice(X1,Y1,Board,N1), nonvar(N1),matrice(X2,Y2,Board,N2), nonvar(N2).
 % 2 a percuté, et pas 1

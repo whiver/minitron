@@ -17,4 +17,4 @@ whichSet2(Board,X,Y,Set) :- isInSet2(Board,X,Y,S0,0),isInSet2(Board,X,Y,S1,1),
 nextMove2(Board,X,Y,NewX,NewY) :- whichSet2(Board,X,Y,Set),random_member(N,Set), move(N,X,Y,NewX,NewY).
 nextMove2(Board,X,Y,NewX,NewY) :- whichSet2(Board,X,Y,Set),Set = [], random_member(N,[0,1,2,3]), move(N,X,Y,NewX,NewY).
 
-iaRandom2(Board, [M1,M2],[P1,P2]) :- dim(N),nextMove2(Board,P1,P2,M1,M2).
+iaRandom2(Board, [M1,M2],[P1,P2]) :- nextMove2(Board,P1,P2,M1,M2).

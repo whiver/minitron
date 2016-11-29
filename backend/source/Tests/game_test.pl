@@ -9,19 +9,23 @@ test_out :- not(out(3,5,10)), % Tester une case à l'intérieur
 			not(out(3,5,10)). 
 
 
-test_game_over :- assert(dim(10)),
-	dim(D), N is D*D, %Calcul des dimensions
-	X1 is 5, Y1 is 5, X2 is 8, Y2 is 8, %définition des points des 2 têtes
-	matrice(X1, Y1, Board, 1), matrice(X2, Y2, Board, 2), %Placement des têtes dans la matrice
-	initList(Board, N), %initialisation du reste de la matrice avec des 0
-	assert(board(Board, [X1, Y1], [X2, Y2])), %assertion du fait board
-
-	not(gameOver([6, 6], [9,9])), % des cases vides
-	gameOver([X1, Y1], [X2, Y2]), % cases toutes les deux remplies
-	gameOver([X1, Y1], [9,9]), % Une case sur deux remplie
-	gameOver([9, 9], [X2,Y2]), % Une case sur deux remplie 
-	gameOver([1, 0], [9,9]), % Une case dehors
-	gameOver([9,9], [11,10]),
-	gameOver([0,2], [X2,Y2]). % Une case dehors
-
+test_game_over :-
+	% Ici les IA n'ont pas d'importance
+	start(10, [5, 5], [8, 8], 'AI_RANDOM2', 'AI_FOLLOWER'),
+	% Cases libres => la partie doit continuer
+	gameOver([6, 6], [9, 9], S1), S1 = 'CONTINUE',
+	% Cases toutes deux occupées => match nul
+	gameOver([5, 5], [8, 8], S2), S2 = 'DRAW',
+	% Le joueur 1 est sur un emplacement occupé, mais pas le joeur 2 => joueur 2 l'emporte
+	gameOver([5, 5], [9, 9], S3), S3 = 'WINNER2',
+	% Le joueur 2 est sur un emplacement occupé, mais pas le joeur 1 => joueur 1 l'emporte
+	gameOver([6, 6], [8, 8], S4), S4 = 'WINNER1',
+	% Le joueur 1 sort des limites du plateau; le joueur 2 est sur un emplacement libre => joueur 2 l'emporte
+	gameOver([1, 0], [9, 9], S5), S5 = 'WINNER2',
+	% Le joueur 2 sort des limites du plateau; le joueur 1 est sur un emplacement libre => joueur 1 l'emporte
+	gameOver([2, 2], [11, 10], S6), S6 = 'WINNER1',
+	% Le joueur 1 sort des limites du plateau; le joueur 2 est sur un emplacement occupé => match nul
+	gameOver([1, 0], [8, 8], S7), S7 = 'DRAW',
+	% Le joueur 2 sort des limites du plateau; le joueur 1 est sur un emplacement occupé => match nul
+	gameOver([5, 5], [11, 10], S8), S8 = 'DRAW'.
 	 
