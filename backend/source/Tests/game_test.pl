@@ -1,3 +1,7 @@
+test_game :-
+	test_out,
+	test_game_over.
+
 % Teste les cas où un point se trouve à l'intérieur ou en dehors des dimensions d'un plateau
 test_out :-
 	not(out(3,5,10)),

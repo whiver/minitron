@@ -1,3 +1,6 @@
+test_init :-
+	test_start.
+
 test_start :-
 	start(10, [1, 1], [10, 10], 'AI_FOLLOWER', 'AI_RANDOM2'),
 	dim(10),
