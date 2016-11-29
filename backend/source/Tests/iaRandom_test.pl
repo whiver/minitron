@@ -1,19 +1,9 @@
-test :- test_init,
+test :-
 		test_mien,
 		test_isInSet,
 		test_whichSet,
 		test_nextMove,
 		test_ia.
-
-test_init :- assert(dim(10)),
-	dim(D), N is D*D, %Calcul des dimensions
-	X1 is 5, Y1 is 5, X2 is 8, Y2 is 8, %définition des points des 2 têtes
-	matrice(X1, Y1, Board, 1), matrice(X2, Y2, Board, 2), %Placement des têtes dans la matrice
-	matrice(1,2, Board, 2),matrice(2,2, Board, 2),matrice(3,2, Board, 2),
-	matrice(2,1, Board, 2),matrice(2,3, Board, 2),matrice(3,4, Board, 2), %Autres initialisations
-	initList(Board, N), %initialisation du reste de la matrice avec des 0
-	assert(board(Board, [X1, Y1], [X2, Y2])). %assertion du fait board
-
 
 test_mien :- board(Board,_,_),
 			mien(Board, 5, 5, 1),
