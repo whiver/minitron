@@ -1,14 +1,16 @@
-test_out :- not(out(3,5,10)), % Tester une case à l'intérieur
-			not(out(3,5,10)), % 
-			not(out(3,5,10)),
-			not(out(3,5,10)),
-			not(out(3,5,10)),
-			not(out(3,5,10)),
-			not(out(3,5,10)),
-			not(out(3,5,10)),
-			not(out(3,5,10)). 
+% Teste les cas où un point se trouve à l'intérieur ou en dehors des dimensions d'un plateau
+test_out :-
+	not(out(3,5,10)),
+	not(out(10,10,10)),
+	not(out(1,1,10)),
+	out(0,5,10), 
+	out(6,0,10),
+	out(11,2,10),
+	out(3,12,10),
+	out(0,0,10),
+	out(12,11,10).
 
-
+% Teste toutes les issues possibles selon la position des deux joueurs
 test_game_over :-
 	% Ici les IA n'ont pas d'importance
 	start(10, [5, 5], [8, 8], 'AI_RANDOM2', 'AI_FOLLOWER'),
