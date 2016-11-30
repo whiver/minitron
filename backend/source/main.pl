@@ -11,4 +11,5 @@
 	'Tests'/test,
 	'Tests'/init_test,
 	'Tests'/iaRandom_test,
+	'Tests'/iaRandom2_test,
 	'Tests'/game_test].

@@ -15,16 +15,16 @@ playMoves(Board, [X1,Y1], [X2,Y2], NewBoard) :- Board = NewBoard, matrice(X1, Y1
 applyIt(Board, Head1, Head2, NewBoard, NewHead1, NewHead2) :- retract(board(Board, Head1, Head2)), assert(board(NewBoard, NewHead1, NewHead2)).
 
 
-% On arrive à la fin du jeu dès que l'un des joueurs essaye de sortir du plateau, ou dès qu'il marche sur ça trainé ou celle de
-% l'autre joueur
-
+% Vérifie que la case est en hors du plateau (Une case du mur)
 out(X,Y,N) :- X>N; Y>N; X<1; Y<1.
+
+% Vérifie si un des cas de game over se présente et détermine le gagnant
 
 % Les deux mouvements sont Out
 winner(_,[X1,Y1], [X2,Y2],'DRAW') :-  dim(N), out(X1,Y1,N), out(X2,Y2,N). 
-% Le 1 est Out, le 2 est à bon.
+% Le 1 est Out, le 2 est bon.
 winner(Board,[X1,Y1], [X2,Y2],'WINNER2') :-  dim(N), out(X1,Y1,N), not(out(X2,Y2,N)), matrice(X2,Y2,Board,N2), var(N2).
-% Le 2 est Out, le 1 n'est bon.
+% Le 2 est Out, le 1 n'est pas bon.
 winner(Board,[X1,Y1], [X2,Y2],'WINNER1') :-  dim(N), out(X2,Y2,N), not(out(X1,Y1,N)), matrice(X1,Y1,Board,N1), var(N1).
 % Le 2 est Out, le 1 est dedans mais a percuté 1 ou 2
 winner(Board,[X1,Y1], [X2,Y2],'DRAW') :-  dim(N), out(X2,Y2,N), not(out(X1,Y1,N)), matrice(X1,Y1,Board,N1), nonvar(N1).
