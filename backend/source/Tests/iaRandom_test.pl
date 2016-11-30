@@ -1,4 +1,4 @@
-test :-
+testIARandom :-
 		test_mien,
 		test_isInSet,
 		test_whichSet,
