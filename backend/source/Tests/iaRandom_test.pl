@@ -6,6 +6,7 @@ test_iaRandom :- 	clean,
 					test_nextMove,
 					test_iaR.
 
+
 % Crée un environement pour le test
 init_iaRandom :- 	assert(dim(10)),		
 					% Remplit des cases par des 1 ou des 2 
