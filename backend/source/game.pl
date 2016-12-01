@@ -97,6 +97,7 @@ ai('AI_FOLLOWER', Board, Move, Head) :- iaFollower(Board, Move, Head).
 % Head -> Position courante de la tête du joueur
 ai('AI_RANDOM2', Board, Move, Head) :- iaRandom2(Board, Move, Head).
 
+ai('AI_MINIMAX', Board, Move, Head) :- iaMiniMax(Board, Move, Head).
 % Applique les coups au plateau
 % Move1 -> Coup du joueur 1
 % Move2 -> Coup du joueur 2
