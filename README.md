@@ -77,8 +77,10 @@ Retourne du JSON sous la forme :
 
 ### Jouer automatiquement (disponible uniquement pour la console Prolog)
 ```
-playAuto(TimeStep).
+playAuto(TimeStep, PrintBoard).
 - TimeStep : Intervale de temps en secondes qui va séparer deux itérations successives.
+- PrintBoard : Booleen autorisant ou non les writeln.
+- Winner : Var qui recevra le gagnant à la fin de la partie.
 ```
 
 ### Interface Web
