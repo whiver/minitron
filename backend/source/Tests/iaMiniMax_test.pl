@@ -3,7 +3,9 @@ test_iaMiniMax :- 	clean,
 					setChildrenNodes_test,
 					levelOneTree_test,
 					leafValue_test,
-					grade_test .
+					grade_test,
+					amountArea_test,
+					inv_test .
 
 % Crée un environement pour le test
 init_iaMiniMax :- 	assert(dim(10)),		
@@ -123,8 +125,8 @@ levelOneTree_test :- 	board(Board,_,_),
 
 								].
 
-leafValue_test :- 	leafValue(2,10,9,1,3,10,Value),
-					Value is 6.
+leafValue_test :- 	leafValue(2,10,9,1,3,10,Value,"PROCHE"),
+					Value is -15.
 
 grade_test :- 	Tree0 = [[1,10],[]], 				% Pas de niveau 1
 				Tree1 = [ [1,10],[
@@ -150,18 +152,17 @@ grade_test :- 	Tree0 = [[1,10],[]], 				% Pas de niveau 1
 				% Dans le cas ou les deux vont sur la même case et que 
 				% c'est la dernière de l'adversaire!! (A améliorer)
 				
-				grade(Tree0, Bx0, By0, Grade0, 1),
+				grade(Tree0, Bx0, By0, Grade0, 1,"PROCHE"),
 				Grade0 is -20 , Bx0 is 1, By0 is 10,
-				grade(Tree1, Bx1, By1, Grade1, 1),
+				grade(Tree1, Bx1, By1, Grade1, 1,"PROCHE"),
 				Grade1 is 20 , Bx1 is 2, By1 is 10,
-				grade(Tree2, Bx2, By2, Grade2, 1),
+				grade(Tree2, Bx2, By2, Grade2, 1,"LOIN"),
 				Grade2 is -20 , Bx2 is 2, By2 is 10,
-				grade(Tree3, Bx3, By3, Grade3, 1),
-				Grade3 is 6 , Bx3 is 2, By3 is 10.
+				grade(Tree3, Bx3, By3, Grade3, 1,"LOIN"),
+				Grade3 is 15 , Bx3 is 2, By3 is 10.
 				
 amountArea_test :-  board(Board,[XP1,YP1],[XP2,YP2]),
-					amountArea(Board,XP1,YP1,XP2,YP2,0, 0, NewA1, NewA2,1),
-					write(NewA1), write(" : "), writeln(NewA2).
+					amountArea(Board,XP1,YP1,XP2,YP2,0, 0, 41, 41,1).
 
 inv_test :- inv(1,1,1),
 			inv(13,2,3).

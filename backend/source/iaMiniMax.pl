@@ -116,7 +116,7 @@ grade([  _, [ [ [X,Y],Ch ] | R ] ], Bx, By, Grade, 1,Type) :- 	grade([ [X,Y],Ch 
 % Si pas/plus de noeuds de niveau 1 le cout est minimal 
 % Retourne la case elle même comme meilleure case 
 grade([ [X,Y], [] ] ,X,Y,ValMin,1,"CASES") :- dim(N), ValMin is -N*N .
-grade([ [X,Y], [] ] ,X,Y,ValMin,1,Type) :- dim(N), ValMin is -N*2 .
+grade([ [X,Y], [] ] ,X,Y,ValMin,1,_) :- dim(N), ValMin is -N*2 .
 
 % Prend le min des couts des noeuds de niveau 2 
 % (Xd,Yd) : le noeud père du noeud de niveau 2
@@ -135,7 +135,7 @@ grade([ _, [ [ [X,Y],_ ] | R ] ] ,Xd1,Yd1,Xd2,Yd2,Grade,3,Type) :- 	leafValue(Xd
 																	max_member(Grade,[GradeC1,GradeC2]) .
 % Si pas/plus de noeuds de niveau 3 le cout est minimal 
 grade([ _, [] ] ,_,_,_,_,ValMin,3,"CASES") :- dim(N), ValMin is -N*N .
-grade([ _, [] ] ,_,_,_,_,ValMin,3,Type) :- dim(N), ValMin is -N*2 .
+grade([ _, [] ] ,_,_,_,_,ValMin,3,_) :- dim(N), ValMin is -N*2 .
 
 
 % Retourne le deplacement au cout le plus favorable d'après l'arbre !
