@@ -55,4 +55,8 @@ export default class Player extends Container {
     this.playerShape.graphics.setStrokeStyle(this.cellSize);
     this.playerShape.graphics.rect(this.cellSize * (x - 0.5), this.cellSize * (y - 0.5), 1, 1);
   }
+
+  getColor() {
+    return PLAYER_COLORS[this.id];
+  }
 }

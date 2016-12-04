@@ -4,6 +4,7 @@ import config from '../config';
 import utils from '../modules/utils';
 import Game from './Game';
 import Player from './Player';
+import EndScene from './EndScene';
 
 /* Game constants */
 const GRID_MARGIN = 50;
@@ -135,17 +136,14 @@ export default class MainScene {
         this.players[0].updatePosition(response.p1X, response.p1Y);
         this.players[1].updatePosition(response.p2X, response.p2Y);
 
-        /*
-        for (let i = 0; i < response.heads.length; ++i) {
-          this.players[i].updatePosition(response.heads[i].x, response.heads[i].y);
-        }
-        */
-
         // Fetch the next move
         this.fetchNextMove();
       } else {
         console.log(`Game ended: ${response.state}`);
+        return new EndScene(this.players[response.state === 'WINNER1' ? 0 : 1]);
       }
+
+      return true;
     });
   }
 
