@@ -9,6 +9,15 @@ const PLAYER_COLORS = utils.shuffle([
   '#1DE2F5',
 ]);
 
+const PLAYER_NAMES = utils.shuffle([
+  'Jarvis',
+  'xXxRaptorxXx',
+  'BigBlue',
+  'Unicoooorn',
+  'DarkRebellion',
+  'W0oOlf',
+]);
+
 let currentId = 0;
 
 /**
@@ -19,9 +28,8 @@ let currentId = 0;
  * @param y     Y position of the first cell where to put the player
  */
 export default class Player extends Container {
-  constructor(name, size, x, y) {
+  constructor(size, x, y) {
     super();
-    this.name = name;
     this.id = currentId++;
     this.cellSize = size;
 
@@ -49,7 +57,7 @@ export default class Player extends Container {
    * @param y The Y cell position (starting at 0)
    */
   updatePosition(x, y) {
-    console.log(`New position for player ${this.name}: (${x},${y}).`);
+    console.log(`New position for player ${this.getName()}: (${x},${y}).`);
 
     // Draw the new position
     this.playerShape.graphics.beginStroke(PLAYER_COLORS[this.id]);
@@ -60,4 +68,11 @@ export default class Player extends Container {
   getColor() {
     return PLAYER_COLORS[this.id];
   }
+
+  getName() {
+    return PLAYER_NAMES[this.id];
+  }
 }
+
+Player.PLAYER_NAMES = PLAYER_NAMES;
+Player.PLAYER_COLORS = PLAYER_COLORS;
