@@ -111,5 +111,5 @@ grade([ _, [] ] ,_,_,_,_,-10,3).
 % L'IA n'a plus aucune case à jouer 
 % M1, M2 correspend à XP1, XP2 (Ce qui déclanche le game over)
 iaMiniMax(Board, [M1,M2],[XP1,YP1]) :- 	board(_,_,[XP2,YP2]),levelOneTree(Board,XP1,YP1,XP2,YP2,Tree),
-										grade(Tree,M1,M2,Grade,1),
-										writeln("Grade : "+Grade+" : B1 : "+M1+" : B2 : "+M2).
+										grade(Tree,M1,M2,Grade,1).
+										%writeln("Grade : "+Grade+" : B1 : "+M1+" : B2 : "+M2).
