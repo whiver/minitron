@@ -1,5 +1,5 @@
 % Condition d'arrêt
-eval(_, _, _, 0, [0,0]) :- true.
+eval(_, _, _, 0, [0,0]).
 
 % Eval - Evalue 2 IA sur un certain nombre de NbParties
 % BoardSize -> la taille de la board
