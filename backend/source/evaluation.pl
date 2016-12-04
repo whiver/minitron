@@ -13,7 +13,7 @@ eval(BoardSize,
      NbParties,
      [P1, P2]) :-
 	Restant is NbParties - 1, eval(BoardSize, P1AI, P2AI, Restant, [P1Temp, P2Temp]),
-	Middle is BoardSize / 2,
+	Middle is BoardSize // 2,
 	random_between(1, Middle,  P1X),
 	random_between(Middle, BoardSize, P2X),
 	random_between(1, BoardSize,  P1Y),
