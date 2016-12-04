@@ -1,12 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions, import/no-unresolved */
 import { Shape, Container, Shadow } from 'EaselJS';
+import utils from '../modules/utils';
 
-const PLAYER_COLORS = [
+const PLAYER_COLORS = utils.shuffle([
+  '#a1ee57',
+  '#FFFC00',
   '#FF0D15',
   '#1DE2F5',
-  '#B0EE69',
-  '#FFFC00',
-];
+]);
 
 let currentId = 0;
 

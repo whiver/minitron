@@ -9,12 +9,14 @@ import EndScene from './EndScene';
 /* Game constants */
 const GRID_MARGIN = 50;
 const GRID_STROKE_WIDTH = 3;
-const PLAYER_NAMES = [
+const PLAYER_NAMES = utils.shuffle([
   'Jarvis',
   'xXxRaptorxXx',
   'BigBlue',
   'Unicoooorn',
-];
+  'DarkRebellion',
+  'W0oOlf',
+]);
 
 /** Show game view */
 export default class MainScene {
