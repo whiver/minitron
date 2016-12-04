@@ -14,7 +14,20 @@ To download the dependencies of the project:
     npm i
     bower install
 
-### Démarrer la partie
+### Run the game
+To run the game, open a console into the project's folder and type the following commands:
+
+    // Launch the Prolog server
+    prolog -l backend/source/main.pl
+    > serve(8000).
+    
+    // In another console, launch the Web server
+    npm start
+    
+You can then access the game at `http://localhost:8080`.
+
+## Développement
+### Démarrer le jeu
 #### Depuis la console Prolog
 ```
 prolog -l backend/source/main.pl
@@ -28,7 +41,7 @@ start(BoardSize, [P1X, P1Y], [P2X, P2Y], P1AI, P2AI).
     
 #### Depuis le Web (HTTP)
 ```
-//Démarrer le serveur
+//Démarrer le serveur Prolog
 prolog -l backend/source/main.pl
 server(Port).
     - Port : numéro de port sur lequel le serveur va écouter
@@ -75,23 +88,10 @@ Retourne du JSON sous la forme :
 - P2Y : Nouvelle position en Y de la tête du joueur 2
 ```
 
-### Jouer automatiquement (disponible uniquement pour la console Prolog)
+### Jouer automatiquement
 ```
-playAuto(TimeStep, PrintBoard).
+playAuto(TimeStep, PrintBoard, Winner).
 - TimeStep : Intervale de temps en secondes qui va séparer deux itérations successives.
 - PrintBoard : Booleen autorisant ou non les writeln.
 - Winner : Var qui recevra le gagnant à la fin de la partie.
-```
-
-### Interface Web
-#### Ouvrir une console de commande
-```
-npm start
-```
-
-#####ET...
-
-#### Ouvrir un navigateur Web
-```
-http://localhost:8080
 ```

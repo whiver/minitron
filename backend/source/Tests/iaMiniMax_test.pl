@@ -124,7 +124,7 @@ levelOneTree_test :- 	board(Board,_,_),
 								].
 
 leafValue_test :- 	leafValue(2,10,9,1,3,10,Value),
-					Value is -4.
+					Value is 6.
 
 grade_test :- 	Tree0 = [[1,10],[]], 				% Pas de niveau 1
 				Tree1 = [ [1,10],[
@@ -151,11 +151,11 @@ grade_test :- 	Tree0 = [[1,10],[]], 				% Pas de niveau 1
 				% c'est la dernière de l'adversaire!! (A améliorer)
 				
 				grade(Tree0, Bx0, By0, Grade0, 1),
-				Grade0 is -10 , Bx0 is 1, By0 is 10,
+				Grade0 is -20 , Bx0 is 1, By0 is 10,
 				grade(Tree1, Bx1, By1, Grade1, 1),
-				Grade1 is 10 , Bx1 is 2, By1 is 10,
+				Grade1 is 20 , Bx1 is 2, By1 is 10,
 				grade(Tree2, Bx2, By2, Grade2, 1),
-				Grade2 is -10 , Bx2 is 2, By2 is 10,
+				Grade2 is -20 , Bx2 is 2, By2 is 10,
 				grade(Tree3, Bx3, By3, Grade3, 1),
-				Grade3 is -4 , Bx3 is 2, By3 is 10.
+				Grade3 is 6 , Bx3 is 2, By3 is 10.
 				

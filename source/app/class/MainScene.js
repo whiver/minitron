@@ -9,14 +9,6 @@ import EndScene from './EndScene';
 /* Game constants */
 const GRID_MARGIN = 50;
 const GRID_STROKE_WIDTH = 3;
-const PLAYER_NAMES = utils.shuffle([
-  'Jarvis',
-  'xXxRaptorxXx',
-  'BigBlue',
-  'Unicoooorn',
-  'DarkRebellion',
-  'W0oOlf',
-]);
 
 /** Show game view */
 export default class MainScene {
@@ -59,22 +51,14 @@ export default class MainScene {
          */
         this.setupBoard(boardSize, boardSize);
 
-        console.log(`Player added: ${PLAYER_NAMES[0]}.`);
-        const player1 = new Player(PLAYER_NAMES[0],
-            this.cellSize,
-            p1X,
-            p1Y,
-            );
+        const player1 = new Player(this.cellSize, p1X, p1Y);
+        console.log(`Player added: ${player1.getName()}.`);
 
         this.players.push(player1);
         this.board.addChild(player1);
 
-        console.log(`Player added: ${PLAYER_NAMES[1]}.`);
-        const player2 = new Player(PLAYER_NAMES[1],
-            this.cellSize,
-            p2X,
-            p2Y,
-            );
+        const player2 = new Player(this.cellSize, p2X, p2Y);
+        console.log(`Player added: ${player2.getName()}.`);
 
         this.players.push(player2);
         this.board.addChild(player2);
