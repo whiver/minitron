@@ -9,6 +9,7 @@
 	iaFollower,
 	iaRandom2,
 	iaMiniMax,
+	evaluation,
 	'Tests'/test,
 	'Tests'/init_test,
 	'Tests'/iaRandom_test,
