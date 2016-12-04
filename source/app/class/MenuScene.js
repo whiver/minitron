@@ -29,7 +29,7 @@ export default class MenuScene {
     const start = () => {
       window.console.log('Game started.');
       this.ctr.style.display = '';
-      document.getElementById('start-btn').removeEventListener('click', start);
+      START_BUTTON.removeEventListener('click', start);
 
       // Get back the game config
       return new MainScene(
@@ -37,10 +37,12 @@ export default class MenuScene {
         PLAYER_1_X_FIELD.value,
         PLAYER_1_Y_FIELD.value,
         PLAYER_2_X_FIELD.value,
-        PLAYER_2_Y_FIELD.value
+        PLAYER_2_Y_FIELD.value,
+        PLAYER_1_AI_FIELD.options[PLAYER_1_AI_FIELD.selectedIndex].value,
+        PLAYER_2_AI_FIELD.options[PLAYER_2_AI_FIELD.selectedIndex].value,
       );
     };
 
-    document.getElementById('start-btn').addEventListener('click', start);
+    START_BUTTON.addEventListener('click', start);
   }
 }
