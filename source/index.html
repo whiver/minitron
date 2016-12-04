@@ -10,7 +10,7 @@
 	<canvas id="main"></canvas>
 
 	<!--Game Menu-->
-	<div id="menu">
+	<form id="menu" action="#">
 		<div class="menu-inner">
 			<div>
 				<p><label for="board-size">Board size</label> <input type="number" required id="board-size" min="0" value="20"></p>
@@ -37,9 +37,9 @@
 			</div>
 		</div>
 		<div class="menu-footer">
-			<button id="start-btn">Start!</button>
+			<input autofocus type="submit" id="start-btn" value="Start!"/>
 		</div>
-	</div>
+	</form>
 
 
 	<script src="assets/app.js"></script>

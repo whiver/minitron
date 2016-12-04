@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions, import/no-unresolved */
 import MainScene from './MainScene';
 
-const START_BUTTON = document.getElementById('start-btn');
 const GRID_SIZE_FIELD = document.getElementById('board-size');
 const PLAYER_1_AI_FIELD = document.getElementById('player-1-config');
 const PLAYER_2_AI_FIELD = document.getElementById('player-2-config');
@@ -26,10 +25,13 @@ export default class MenuScene {
     this.ctr = document.getElementById('menu');
     this.ctr.style.display = 'block';
 
-    const start = () => {
+    const start = (event) => {
       window.console.log('Game started.');
       this.ctr.style.display = '';
-      START_BUTTON.removeEventListener('click', start);
+      this.ctr.removeEventListener('submit', start);
+
+      event.stopPropagation();
+      event.preventDefault();
 
       // Get back the game config
       return new MainScene(
@@ -43,6 +45,6 @@ export default class MenuScene {
       );
     };
 
-    START_BUTTON.addEventListener('click', start);
+    this.ctr.addEventListener('submit', start);
   }
 }
