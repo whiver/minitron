@@ -159,3 +159,11 @@ grade_test :- 	Tree0 = [[1,10],[]], 				% Pas de niveau 1
 				grade(Tree3, Bx3, By3, Grade3, 1),
 				Grade3 is 6 , Bx3 is 2, By3 is 10.
 				
+amountArea_test :-  board(Board,[XP1,YP1],[XP2,YP2]),
+					amountArea(Board,XP1,YP1,XP2,YP2,0, 0, NewA1, NewA2,1),
+					write(NewA1), write(" : "), writeln(NewA2).
+
+inv_test :- inv(1,1,1),
+			inv(13,2,3).
+
+					

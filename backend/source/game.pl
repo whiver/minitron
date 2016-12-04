@@ -107,6 +107,18 @@ ai('AI_RANDOM2', Board, Move, Head) :- iaRandom2(Board, Move, Head).
 % Head -> Position courante de la tête du joueur
 ai('AI_MINIMAX', Board, Move, Head) :- iaMiniMax(Board, Move, Head).
 
+% Demande un coup à l'IA "MinimaxF" à partir d'une position du joueur.
+% Board -> Plateau de jeu
+% Move -> Coup que va jouer l'IA
+% Head -> Position courante de la tête du joueur
+ai('AI_MINIMAXF', Board, Move, Head) :- iaMiniMaxF(Board, Move, Head).
+
+% Demande un coup à l'IA "MinimaxC" à partir d'une position du joueur.
+% Board -> Plateau de jeu
+% Move -> Coup que va jouer l'IA
+% Head -> Position courante de la tête du joueur
+ai('AI_MINIMAXC', Board, Move, Head) :- iaMiniMaxC(Board, Move, Head).
+
 % Applique les coups au plateau
 % Move1 -> Coup du joueur 1
 % Move2 -> Coup du joueur 2
