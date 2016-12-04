@@ -75,10 +75,12 @@ Retourne du JSON sous la forme :
 - P2Y : Nouvelle position en Y de la tête du joueur 2
 ```
 
-### Jouer automatiquement (disponible uniquement pour la console Prolog)
+### Jouer automatiquement
 ```
-playAuto(TimeStep).
+playAuto(TimeStep, PrintBoard, Winner).
 - TimeStep : Intervale de temps en secondes qui va séparer deux itérations successives.
+- PrintBoard : Booleen autorisant ou non les writeln.
+- Winner : Var qui recevra le gagnant à la fin de la partie.
 ```
 
 ### Interface Web

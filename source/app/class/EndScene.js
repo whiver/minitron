@@ -22,7 +22,7 @@ export default class EndScene {
   init() {
     this.ctr = utils.drawCtr(0, (config.canvas.height - SHAPE_HEIGHT) / 2);
     const shp = utils.drawShp(0, 0, config.canvas.width, SHAPE_HEIGHT, 'black'),
-      winnerName = utils.drawText(this.winner.name, '110px Ubuntu', this.winner.getColor()),
+      winnerName = utils.drawText(this.winner.getName(), '110px Ubuntu', this.winner.getColor()),
       text = utils.drawText('won the game!', '40px Ubuntu', 'white');
 
     this.ctr.addChild(shp, winnerName, text);

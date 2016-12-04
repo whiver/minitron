@@ -15,7 +15,8 @@ distance(X,Y,D) :- D is Y-X, D>=0.
 leafValue(XP1,YP1,XP2,YP2,X,Y,Value) :- distance(XP1,X,DX1), distance(YP1,Y,DY1), Val1 is DX1+DY1,
 										distance(XP2,X,DX2), distance(YP2,Y,DY2), Val2 is DX2+DY2,
 										Val is Val2-Val1,
-										Value is 10-Val .
+										dim(N), ValMax is 2*N,
+										Value is ValMax-Val .
 
 % Pour un ensemble de points vides, il n'y a pas de noeuds fils
 setChildrenNodes(_, _, [], []).
@@ -84,17 +85,17 @@ grade([  _, [ [ [X,Y],Ch ] | R ] ], Bx, By, Grade, 1) :- 	grade([ [X,Y],Ch ],X,Y
 																(Grade is GradeC2, Bx is Bx1, By is By1);
 																(Grade is GradeC1, Bx is X, By is Y)
 															) .   
-% Si pas/plus de noeuds de niveau 1 le cout est minimal (-10)
+% Si pas/plus de noeuds de niveau 1 le cout est minimal 
 % Retourne la case elle même comme meilleure case 
-grade([ [X,Y], [] ] ,X,Y,-10,1).
+grade([ [X,Y], [] ] ,X,Y,ValMin,1) :- dim(N), ValMin is -N*2 .
 
 % Prend le min des couts des noeuds de niveau 2 
 % (Xd,Yd) : le noeud père du noeud de niveau 2
 grade([  _, [ [ [X,Y],Ch ] | R ] ] ,Xd,Yd,Grade,2) :- 	grade([ [X,Y],Ch ],Xd,Yd,X,Y,GradeC1,3),
 															grade([ _,R ],Xd,Yd,GradeC2,2), 
 															min_member(Grade,[GradeC1,GradeC2]) .
-% Si pas/plus de noeuds de niveau 2 le cout est maximal (10)
-grade([ _, [] ] ,_,_,10,2).
+% Si pas/plus de noeuds de niveau 2 le cout est maximal
+grade([ _, [] ] ,_,_,ValMax,2) :- dim(N), ValMax is N*2 .
 
 % Prend le max des noeuds de niveau 3 
 % (Xd1,Yd1) : Le noeud grand-père du noeud de niveau 3
@@ -102,8 +103,8 @@ grade([ _, [] ] ,_,_,10,2).
 grade([ _, [ [ [X,Y],_ ] | R ] ] ,Xd1,Yd1,Xd2,Yd2,Grade,3) :- 	leafValue(Xd1,Yd1,Xd2,Yd2,X,Y,GradeC1),
 																	grade([ _, R ],Xd1,Yd1,Xd2,Yd2,GradeC2,3), 
 																	max_member(Grade,[GradeC1,GradeC2]) .
-% Si pas/plus de noeuds de niveau 3 le cout est minimal (-10)
-grade([ _, [] ] ,_,_,_,_,-10,3).
+% Si pas/plus de noeuds de niveau 3 le cout est minimal 
+grade([ _, [] ] ,_,_,_,_,ValMin,3) :- dim(N), ValMin is -N*2 .
 
 
 % Retourne le deplacement au cout le plus favorable d'après l'arbre !
@@ -111,5 +112,4 @@ grade([ _, [] ] ,_,_,_,_,-10,3).
 % L'IA n'a plus aucune case à jouer 
 % M1, M2 correspend à XP1, XP2 (Ce qui déclanche le game over)
 iaMiniMax(Board, [M1,M2],[XP1,YP1]) :- 	board(_,_,[XP2,YP2]),levelOneTree(Board,XP1,YP1,XP2,YP2,Tree),
-										grade(Tree,M1,M2,Grade,1).
-										%writeln("Grade : "+Grade+" : B1 : "+M1+" : B2 : "+M2).
+										grade(Tree,M1,M2,_,1).

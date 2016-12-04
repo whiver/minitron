@@ -20,11 +20,16 @@ canvas {
 }
 
 .menu-inner > * {
-	margin: 0 1em;
+	padding: 0 1em;
+	border-left: 1px solid rgba(0,0,0,0.7);
+}
+
+.menu-inner > *:first-of-type {
+	border: none;
 }
 
 #menu {
-	background-color: rgba(255, 255, 255, 0.7);
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0.2) 100%);
 	position: absolute;
 	height: 100%;
 	max-width: 1920px;
@@ -42,20 +47,25 @@ canvas {
 	margin: 2em auto;
 	display: block;
 	font-size: 3em;
-	background-color: #a1ee57;
+	background-color: rgba(0,0,0,0.7);
 	border: none;
 	box-shadow: 1px 1px 7px #759c4b;
 	transition: all ease 0.4s;
 	cursor: pointer;
 	border-radius: 2px;
-	color: #2e2e2e;
+	color: #a1ee57;
 }
 
 #start-btn:hover {
-	box-shadow: 1px 1px 20px #759c4b;
-	background-color: #a1db63;
+	box-shadow: 1px 1px 15px #759c4b;
+	background-color: rgba(0,0,0,0.8);
 }
 
 #menu input[type=number] {
 	width: 2.5em;
+}
+
+#player-1-name, #player-2-name {
+	background-color: rgba(0,0,0,0.7);
+	padding: 0.3em;
 }
