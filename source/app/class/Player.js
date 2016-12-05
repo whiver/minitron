@@ -16,6 +16,7 @@ const PLAYER_NAMES = utils.shuffle([
   'Unicoooorn',
   'DarkRebellion',
   'W0oOlf',
+  'Slouby',
 ]);
 
 let currentId = 0;
