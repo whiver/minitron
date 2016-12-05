@@ -153,7 +153,8 @@ grade_test :- 	Tree0 = [[1,10],[]], 				% Pas de niveau 1
 				% c'est la dernière de l'adversaire!! (A améliorer)
 				
 				grade(Tree0, Bx0, By0, Grade0, 1,"PROCHE"),
-				Grade0 is -20 , Bx0 is 1, By0 is 10,
+				Grade0 is -20 ,
+				((Bx0 is 2, By0 is 10); (Bx0 is 1, By0 is 9)),
 				grade(Tree1, Bx1, By1, Grade1, 1,"PROCHE"),
 				Grade1 is 20 , Bx1 is 2, By1 is 10,
 				grade(Tree2, Bx2, By2, Grade2, 1,"LOIN"),

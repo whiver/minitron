@@ -5,8 +5,6 @@
 % Niveau 3 : Les cases à jouer par l'IA au prochain tour en évitant la case jouée son adversaire
 
 % Elle peux Eviter d'aller dans une case qui causera sa perte au prochain tour
-% Elle suit son adversaire et donc le bloque en crayant un mur devant lui
-% Il arrive qu'en suivant son adversaire l'IA se renferme elle même 
 
 distance(X,Y,D) :- D is X-Y, D>=0.
 distance(X,Y,D) :- D is Y-X, D>=0.
@@ -16,6 +14,9 @@ distanceCells([X1,Y1], [X2,Y2], Val) :- distance(X1,X2,DX), distance(Y1,Y2,DY), 
 inv(Num,X,Y) :- dim(N), R is Num mod N, Q is div(Num,N), ((R > 0, X is Q+1, Y is R); (X is Q, Y is N)).
 
 % Calcule le nombre de cases les plus proches de chaque joueur 
+% A1, A2 doivent être mis à 0
+% NewA1 : nombre de cases libres plus proches de l'ia que de son adversaire
+% NewA2 : nombre de cases libres plus proches de l'adversaire de l'IA que de l'IA elle même
 amountArea([],_,_,_,_,A1, A2, A1, A2,_).
 amountArea([H|Rest],XP1,YP1,XP2,YP2,A1, A2, NewA1, NewA2, Pos) :- 	nonvar(H),
 																	NextPos is Pos + 1,
@@ -52,19 +53,27 @@ setChildrenNodes(_, _, [], []).
 % construit une liste des noeuds fils d'un noeud à partir d'un ensemble de numéros de cases 
 % [H|R] : Ensemble de numéros de cases
 % Children : Liste de noeuds représentant ces cases
-setChildrenNodes(X, Y, Children, [H|R]) :- move(H,X,Y,NewX,NewY), Ch1 = [	[ [NewX,NewY],_ ]	],  
-													setChildrenNodes(X, Y, Ch2, R), union(Ch1, Ch2, Children).
+setChildrenNodes(X, Y, Children, [H|R]) :- 	move(H,X,Y,NewX,NewY), Ch1 = [	[ [NewX,NewY],_ ]	],  
+											setChildrenNodes(X, Y, Ch2, R), union(Ch1, Ch2, Children).
 
+% Les cases en commun entre les quatre cases qui entourent chacune des positions [X1,Y1], [X2,Y2] 
+setToUse(_,_,[],_,_,[]).
+setToUse(X1,Y1,[Head|Rest],X2,Y2,Set) :- 	move(Head,X1,Y1,NewX,NewY), 
+											setToUse(X1,Y1,Rest,X2,Y2,SetR),
+											((move(_,X2,Y2,NewX,NewY), union([Head],SetR,Set));
+											(not(move(_,X2,Y2,NewX,NewY)), union([],SetR,Set))).	 
 % Crée le niveau 1 de l'arbre
 % Si plus de cases à jouer (La liste des Children est vide)
 % [XP1, YP1] : Position de l'IA
 % [XP2, YP2] : Position de son adversaire
 % En dernier paramètre : La tête de l'arbre
-levelOneTree(Board,XP1,YP1,XP2,YP2,[[XP1,YP1],Children]) :- 
-							% Associe au premier noeud (Position actuelle de P1) la liste de ses noeuds fils	
-							whichSet2(Board,XP1,YP1,Set), setChildrenNodes(XP1, YP1, Children, Set), 
-							% Ajoute les niveaux 2 et 3						
-							levelTree(Board,Children,XP2,YP2).
+levelOneTree(Board,XP1,YP1,XP2,YP2,[[XP1,YP1],Children]) :- whichSet2(Board,XP1,YP1,Set1), 
+															setToUse(XP1,YP1,Set1,XP2,YP2,Set2),
+															% Enlever de Set1 les cases qu'il a en commun avec Set2 
+															subtract(Set1,Set2, Set),
+															setChildrenNodes(XP1, YP1, Children, Set), 
+															% Ajoute les niveaux 2 et 3						
+															levelTree(Board,Children,XP2,YP2).
 
 % Permet d'ajouter les niveaux 2 et 3 de l'arbre
 % Ne fait rien pour une liste vide de Children (Aucun noeud de niveau 1)
@@ -72,12 +81,7 @@ levelTree(_,[],_,_).
 % Pour chaque noeud de niveau 1, ajoute les noeuds des niveaux 2 et 3
 % (si un noeud est au niveau 1 il est enlevé des noeuds du niveau 2)
 levelTree(Board,[ [ [X,Y] , Children ] | R ],XP2,YP2) :- 	whichSet2(Board,XP2,YP2,SetL2),
-															% Enlever le noeud choisi au niveau 1 
-															% des cases candidates du joueur 2
-															% Branche à évite
-															((move(NL1,XP2,YP2,X,Y), S = [NL1]); S = []),
-															subtract(SetL2,S, SetL2ToUse),
-															setChildrenNodes(XP2, YP2, Children, SetL2ToUse), 
+															setChildrenNodes(XP2, YP2, Children, SetL2),															 
 															% Ajouter les noeuds du niveau 3											
 															levelThreeTree(Board, Children, X, Y),
 															% Passer au prochain noeud de niveau 1
@@ -103,20 +107,21 @@ displayLeaves([ [_,_], Ch ]) :- displayElt(Ch).
 displayElt([]).
 displayElt([H|R]) :- displayLeaves(H), displayElt(R).
 
-% Trouve le coup le plus avantageux à jouer (entre -10 et 10)
+% Trouve le coup le plus avantageux à jouer 
 % Prend le max des couts des noeuds de niveau 1, 
 %(Bx,By) : la case ayant le cout max
 grade([  _, [ [ [X,Y],Ch ] | R ] ], Bx, By, Grade, 1,Type) :- 	grade([ [X,Y],Ch ],X,Y,GradeC1,2,Type),
-															grade([ [X,Y], R ],Bx1,By1,GradeC2,1,Type), 
-															max_member(Grade,[GradeC1,GradeC2]),
-															( 	
-																(Grade is GradeC2, Bx is Bx1, By is By1);
-																(Grade is GradeC1, Bx is X, By is Y)
-															) .   
+																grade([ [X,Y], R ],Bx1,By1,GradeC2,1,Type), 
+																max_member(Grade,[GradeC1,GradeC2]),
+																( 	
+																	(Grade is GradeC2, Bx is Bx1, By is By1);
+																	(Grade is GradeC1, Bx is X, By is Y)
+																) .   
 % Si pas/plus de noeuds de niveau 1 le cout est minimal 
-% Retourne la case elle même comme meilleure case 
-grade([ [X,Y], [] ] ,X,Y,ValMin,1,"CASES") :- dim(N), ValMin is -N*N .
-grade([ [X,Y], [] ] ,X,Y,ValMin,1,_) :- dim(N), ValMin is -N*2 .
+% Retourne une valeur random entres les cases qui entourent l'IA
+% Aucun coup favorable trouvé  
+grade([ [X,Y], [] ] ,XR,YR,ValMin,1,"CASES") :- dim(N), ValMin is -N*N, board(B,_,_),iaRandom2(B,[XR,YR],[X,Y]) .
+grade([ [X,Y], [] ] ,XR,YR,ValMin,1,_) :- dim(N), ValMin is -N*2, board(B,_,_),iaRandom2(B,[XR,YR],[X,Y]) .
 
 % Prend le min des couts des noeuds de niveau 2 
 % (Xd,Yd) : le noeud père du noeud de niveau 2
@@ -138,14 +143,37 @@ grade([ _, [] ] ,_,_,_,_,ValMin,3,"CASES") :- dim(N), ValMin is -N*N .
 grade([ _, [] ] ,_,_,_,_,ValMin,3,_) :- dim(N), ValMin is -N*2 .
 
 
-% Retourne le deplacement au cout le plus favorable d'après l'arbre !
-% Si même le niveau 1 est abscent dans l'arbre 
-% L'IA n'a plus aucune case à jouer 
-% M1, M2 correspend à XP1, XP2 (Ce qui déclanche le game over)
-iaMiniMax(Board, [M1,M2],[XP1,YP1]) :- 	board(_,_,[XP2,YP2]),levelOneTree(Board,XP1,YP1,XP2,YP2,Tree),
+% Retournent le deplacement au cout le plus favorable d'après l'arbre !
+% Le cout le plus favorable est celui qui fait rapprocher l'IA de son adversaire
+iaMiniMax(Board, [M1,M2],[XP,YP]) :- 	% Récupérer la position du deuxième joueur 
+										board(_,[P1X,P1Y],[P2X,P2Y]),
+										((XP = P1X, YP = P1Y, XP2 = P2X, YP2 = P2Y);
+										(P2X = XP, P2Y = YP, XP2 = P1X, YP2 = P1Y)),
+										XP1 = XP, YP1 = YP,
+										% Crée l'arbre des coûts
+										levelOneTree(Board,XP1,YP1,XP2,YP2,Tree),
+										% Cherche le meilleur coût
 										grade(Tree,M1,M2,_,1,"PROCHE").
-iaMiniMaxF(Board, [M1,M2],[XP1,YP1]) :- 	board(_,_,[XP2,YP2]),levelOneTree(Board,XP1,YP1,XP2,YP2,Tree),
+
+% Le coup le plus favorable est celui qui fait fuire l'IA de son adversaire
+iaMiniMaxF(Board, [M1,M2],[XP,YP]) :- 	% Récupérer la position du deuxième joueur 
+										board(_,[P1X,P1Y],[P2X,P2Y]),
+										((XP = P1X, YP = P1Y, XP2 = P2X, YP2 = P2Y);
+										(P2X = XP, P2Y = YP, XP2 = P1X, YP2 = P1Y)),
+										XP1 = XP, YP1 = YP,
+										% Crée l'arbre des coûts
+										levelOneTree(Board,XP1,YP1,XP2,YP2,Tree),
+										% Cherche le meilleur coût
 										grade(Tree,M1,M2,_,1,"LOIN").
-iaMiniMaxC(Board, [M1,M2],[XP1,YP1]) :- 	board(_,_,[XP2,YP2]),levelOneTree(Board,XP1,YP1,XP2,YP2,Tree),
+
+% Le coup le plus favorable est celui qui fait en sorte que l'IA ait le plus de cases libres proches d'elle
+iaMiniMaxC(Board, [M1,M2],[XP,YP]) :- 	% Récupérer la position du deuxième joueur 
+										board(_,[P1X,P1Y],[P2X,P2Y]),
+										((XP = P1X, YP = P1Y, XP2 = P2X, YP2 = P2Y);
+										(P2X = XP, P2Y = YP, XP2 = P1X, YP2 = P1Y)),
+										XP1 = XP, YP1 = YP,
+										% Crée l'arbre des coûts
+										levelOneTree(Board,XP1,YP1,XP2,YP2,Tree),
+										% Cherche le meilleur coût
 										grade(Tree,M1,M2,_,1,"CASES").
 
