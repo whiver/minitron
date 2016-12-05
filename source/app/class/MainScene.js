@@ -6,9 +6,11 @@ import Game from './Game';
 import Player from './Player';
 import EndScene from './EndScene';
 
+
 /* Game constants */
 const GRID_MARGIN = 50;
 const GRID_STROKE_WIDTH = 3;
+const DELAY = document.getElementById('turn-delay').value;
 
 /** Show game view */
 export default class MainScene {
@@ -122,11 +124,15 @@ export default class MainScene {
         this.players[0].updatePosition(response.p1X, response.p1Y);
         this.players[1].updatePosition(response.p2X, response.p2Y);
 
-        // Fetch the next move
-        this.fetchNextMove();
+        // Fetch the next move after a few moment
+        window.setTimeout(this.fetchNextMove.bind(this), DELAY);
       } else {
         console.log(`Game ended: ${response.state}`);
-        return new EndScene(this.players[response.state === 'WINNER1' ? 0 : 1]);
+        return new EndScene(
+          response.state === 'DRAW'
+          ? null
+          : this.players[response.state === 'WINNER1' ? 0 : 1]
+        );
       }
 
       return true;

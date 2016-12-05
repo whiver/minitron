@@ -53,10 +53,14 @@ getStartRequestParams(Request,
                      p2Y(P2Y, [between(1, BoardSize), default(BoardSize)]),
                      p1AI(P1AI, [oneof(['AI_MINIMAX',
                                         'AI_RANDOM2',
-                                        'AI_FOLLOWER'])]),
+                                        'AI_FOLLOWER',
+                                        'AI_MINIMAXC',
+                                        'AI_MINIMAXF'])]),
                      p2AI(P2AI, [oneof(['AI_MINIMAX',
                                         'AI_RANDOM2',
-                                        'AI_FOLLOWER'])])]).
+                                        'AI_FOLLOWER',
+                                        'AI_MINIMAXC',
+                                        'AI_MINIMAXF'])])]).
 
 :- http_handler(root(playOnce), httpPlayOnceHandler, []).
 % Handler répondant à l'URL /playOnce

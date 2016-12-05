@@ -21,18 +21,31 @@ export default class EndScene {
    */
   init() {
     this.ctr = utils.drawCtr(0, (config.canvas.height - SHAPE_HEIGHT) / 2);
-    const shp = utils.drawShp(0, 0, config.canvas.width, SHAPE_HEIGHT, 'black'),
-      winnerName = utils.drawText(this.winner.getName(), '110px Ubuntu', this.winner.getColor()),
-      text = utils.drawText('won the game!', '40px Ubuntu', 'white');
 
-    this.ctr.addChild(shp, winnerName, text);
+    if (this.winner) {
+      const shp = utils.drawShp(0, 0, config.canvas.width, SHAPE_HEIGHT, 'black'),
+        winnerName = utils.drawText(this.winner.getName(), '110px Ubuntu', this.winner.getColor()),
+        text = utils.drawText('won the game!', '40px Ubuntu', 'white');
 
-    winnerName.y = 50;
-    text.y = 300;
-    shp.alpha = 0.6;
+      this.ctr.addChild(shp, winnerName, text);
 
-    utils.centerObjectHorizontal(text, this.ctr);
-    utils.centerObjectHorizontal(winnerName, this.ctr);
+      winnerName.y = 50;
+      text.y = 300;
+      shp.alpha = 0.6;
+
+      utils.centerObjectHorizontal(text, this.ctr);
+      utils.centerObjectHorizontal(winnerName, this.ctr);
+    } else {
+      const shp = utils.drawShp(0, 0, config.canvas.width, SHAPE_HEIGHT, 'black'),
+        winnerName = utils.drawText('Draw!', '110px Ubuntu', 'white');
+
+      this.ctr.addChild(shp, winnerName);
+
+      winnerName.textBaseline = 'middle';
+      shp.alpha = 0.6;
+
+      utils.centerObject(winnerName, this.ctr);
+    }
 
     Game.STAGE.addChild(this.ctr);
   }
