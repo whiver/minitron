@@ -148,9 +148,6 @@ grade_test :- 	Tree0 = [[1,10],[]], 				% Pas de niveau 1
 								[[9,1],[]]
 							]]
 						]],
-				% (l'adversaire perd au prochain tour)
-				% Dans le cas ou les deux vont sur la même case et que 
-				% c'est la dernière de l'adversaire!! (A améliorer)
 				
 				grade(Tree0, Bx0, By0, Grade0, 1,"PROCHE"),
 				Grade0 is -20 ,
